@@ -14,6 +14,7 @@ let showingForm = false
 export async function mountDoctor(app, user, onLogout) {
   currentUser = user
   logoutFn = onLogout
+  showingForm = false
   patients = await getAllPatients(user.uid, 'doctor')
   renderDoctor(app)
 }
@@ -21,7 +22,7 @@ export async function mountDoctor(app, user, onLogout) {
 function renderDoctor(app) {
   const sorted = [...patients].sort((a, b) => {
     const w = { red: 1, yellow: 2, green: 3 }
-    return w[a.priority] - w[b.priority]
+    return (w[a.priority] ?? 4) - (w[b.priority] ?? 4)
   })
   const total = sorted.length
   const alertas = sorted.filter(p => p.priority === 'red').length
@@ -206,7 +207,7 @@ function wireAddPatientForm(app) {
         procedure,
         stage,
         priority,
-        nextControl: nextControlRaw ? new Date(nextControlRaw) : null,
+        nextControl: nextControlRaw ? new Date(nextControlRaw + 'T12:00:00') : null,
         pendingAppointment: null,
         currentMilestone: 0,
         milestones: [],
@@ -228,11 +229,15 @@ function wireAddPatientForm(app) {
 }
 
 async function handleSetPriority(app, patientId, newPriority) {
-  await setPriority(patientId, newPriority, currentUser.uid)
-  const idx = patients.findIndex(p => p.id === patientId)
-  if (idx !== -1) patients[idx].priority = newPriority
-  renderDoctor(app)
-  refreshIcons()
+  try {
+    await setPriority(patientId, newPriority, currentUser.uid)
+    const idx = patients.findIndex(p => p.id === patientId)
+    if (idx !== -1) patients[idx].priority = newPriority
+    renderDoctor(app)
+    refreshIcons()
+  } catch (err) {
+    alert('No se pudo actualizar la prioridad. Verificá tu conexión.')
+  }
 }
 
 function formatDate(val) {

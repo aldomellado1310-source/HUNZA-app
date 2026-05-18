@@ -9,29 +9,33 @@ export async function mountPatient(app, user, onLogout) {
   currentUser = user
   logoutFn = onLogout
 
-  // Returning patient: search by UID
-  let patient = await getPatientByUid(user.uid)
-
-  if (!patient) {
-    // First login: search by email and link
-    patient = await getPatientByEmail(user.email)
+  try {
+    // Returning patient: search by UID
+    let patient = await getPatientByUid(user.uid)
 
     if (!patient) {
-      renderNoAccess(app)
-      return
+      // First login: search by email and link
+      patient = await getPatientByEmail(user.email)
+
+      if (!patient) {
+        renderNoAccess(app)
+        return
+      }
+
+      await linkPatient(patient.id, user.uid)
+      patient.linkedUid = user.uid
     }
 
-    await linkPatient(patient.id, user.uid)
-    patient.linkedUid = user.uid
-  }
+    currentPatient = patient
 
-  currentPatient = patient
-
-  if (!patient.onboardingDone) {
-    renderPatient(app)
-    renderOnboardingModal(app)
-  } else {
-    renderPatient(app)
+    if (!patient.onboardingDone) {
+      renderPatient(app)
+      renderOnboardingModal(app)
+    } else {
+      renderPatient(app)
+    }
+  } catch (err) {
+    app.innerHTML = `<div class="min-h-screen flex items-center justify-center p-4"><p class="text-red-500 text-sm">Error al cargar tu ficha. Recargá la página.</p></div>`
   }
 }
 
