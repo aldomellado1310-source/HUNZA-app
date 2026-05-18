@@ -151,6 +151,8 @@ function renderPatient(app) {
       if (icon) icon.style.transform = content.classList.contains('hidden') ? '' : 'rotate(180deg)'
     })
   })
+
+  refreshIcons()
 }
 
 function renderOnboardingModal(app) {
