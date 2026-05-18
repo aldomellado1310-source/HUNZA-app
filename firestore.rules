@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isDoctor() {
+      return get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'doctor';
+    }
+
+    function isLinkedPatient() {
+      return resource.data.linkedUid == request.auth.uid;
+    }
+
+    function isEmailMatch() {
+      return resource.data.linkedUid == null &&
+             resource.data.email == request.auth.token.email;
+    }
+
+    match /users/{uid} {
+      allow read: if request.auth.uid == uid;
+      allow create: if request.auth.uid == uid;
+      allow update: if request.auth.uid == uid && isDoctor();
+    }
+
+    match /patients/{patientId} {
+      allow read: if isDoctor() || isLinkedPatient() || isEmailMatch();
+      allow create: if isDoctor();
+      allow update: if isDoctor() ||
+        (isLinkedPatient() &&
+         request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['onboardingDone'])) ||
+        (isEmailMatch() &&
+         request.resource.data.diff(resource.data).affectedKeys()
+           .hasOnly(['linkedUid', 'onboardingDone']));
+      allow delete: if isDoctor();
+    }
+
+    match /audit_logs/{logId} {
+      allow create: if request.auth != null;
+      allow read: if isDoctor();
+      allow update, delete: if false;
+    }
+  }
+}
