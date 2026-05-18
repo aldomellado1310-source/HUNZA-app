@@ -6,8 +6,8 @@ const mesesNombres = ['Enero','Febrero','Marzo','Abril','Mayo','Junio',
 let chartInstance = null
 
 export function initChart(filters) {
-  const ctx = document.getElementById('proceduresChart')
-  if (!ctx) return
+  const canvasEl = document.getElementById('proceduresChart')
+  if (!canvasEl) return
 
   if (chartInstance) chartInstance.destroy()
 
@@ -30,7 +30,7 @@ export function initChart(filters) {
     chartTitle = `Flujo Diario (Semana Actual, ${mesesNombres[parseInt(month) - 1]})`
   }
 
-  chartInstance = new Chart(ctx, {
+  chartInstance = new Chart(canvasEl, {
     type: 'bar',
     data: {
       labels,

@@ -12,21 +12,27 @@ export function refreshIcons() {
 const app = document.getElementById('app')
 
 onAuthChange(async (user) => {
-  if (!user) {
-    mountLogin(app, handleGoogleLogin)
-    refreshIcons()
-    return
-  }
+  try {
+    if (!user) {
+      mountLogin(app, handleGoogleLogin)
+      refreshIcons()
+      return
+    }
 
-  await ensureUserDoc(user)
-  const role = await getUserRole(user.uid)
+    await ensureUserDoc(user)
+    const role = await getUserRole(user.uid)
 
-  if (role === 'doctor') {
-    await mountDoctor(app, user, handleLogout)
-    refreshIcons()
-  } else {
-    await mountPatient(app, user, handleLogout)
-    refreshIcons()
+    if (role === 'doctor') {
+      await mountDoctor(app, user, handleLogout)
+      refreshIcons()
+    } else if (role === 'patient' || role === null) {
+      await mountPatient(app, user, handleLogout)
+      refreshIcons()
+    } else {
+      await logout()
+    }
+  } catch (err) {
+    app.innerHTML = `<div class="min-h-screen flex items-center justify-center p-4"><p class="text-red-500 text-sm">Error al cargar la app. Recargá la página.</p></div>`
   }
 })
 
@@ -36,7 +42,10 @@ async function handleGoogleLogin() {
     // onAuthChange fires automatically — no manual navigation needed
   } catch (err) {
     const errEl = document.getElementById('login-error')
-    if (errEl) errEl.textContent = 'Error al iniciar sesión. Intentá de nuevo.'
+    if (errEl) {
+      errEl.textContent = 'Error al iniciar sesión. Intentá de nuevo.'
+      errEl.classList.remove('hidden')
+    }
   }
 }
 
