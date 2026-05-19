@@ -11,27 +11,36 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&display=swap');
 
         :root {
-            --bg: #faf9f6;
-            --surface: #ffffff;
-            --primary: #292524;
-            --accent: #b5956a;
-            --muted: #78716c;
-            --border: #e7e5e4;
-            --subtle: #f5f4f1;
+            --bg:             #f4efe6;
+            --surface:        #ffffff;
+            --primary:        #2a4a3c;
+            --primary-hover:  #1e3a2e;
+            --primary-dim:    #3d6557;
+            --primary-light:  #e5eeea;
+            --accent:         #c49a54;
+            --accent-light:   #f5e8d0;
+            --text:           #1a2820;
+            --text-mid:       #3d5247;
+            --text-muted:     #6c7e75;
+            --border:         #ddd6c9;
+            --border-green:   #c5d8cf;
         }
+
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Montserrat', sans-serif;
             background-color: var(--bg);
-            color: var(--primary);
+            color: var(--text);
             -webkit-tap-highlight-color: transparent;
         }
 
         .font-serif { font-family: 'Playfair Display', serif; }
 
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: #eee9df; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #c8c0b4; border-radius: 10px; }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
@@ -39,7 +48,7 @@
             -webkit-appearance: none;
             -moz-appearance: none;
             appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%236c7e75' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
             background-repeat: no-repeat;
             background-position: right 0.5rem center;
             background-size: 1em;
@@ -48,69 +57,57 @@
 
         /* Transición de vistas */
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(14px); }
+            from { opacity: 0; transform: translateY(16px); }
             to   { opacity: 1; transform: translateY(0); }
         }
-        .view-enter { animation: fadeUp 0.32s cubic-bezier(0.22, 1, 0.36, 1) both; }
+        .view-enter { animation: fadeUp 0.32s cubic-bezier(0.22,1,0.36,1) both; }
 
-        /* FAQ animado con grid */
-        .faq-body {
-            display: grid;
-            grid-template-rows: 0fr;
-            transition: grid-template-rows 0.28s ease;
-        }
+        /* FAQ suave con grid */
+        .faq-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.28s ease; }
         .faq-body.open { grid-template-rows: 1fr; }
         .faq-body > div { overflow: hidden; }
 
-        /* Milestone activo */
-        .milestone-active {
-            box-shadow: 0 0 0 2.5px #292524, 0 6px 28px rgba(41,37,36,0.13);
-        }
+        /* Progress fill animation */
+        .progress-fill { transition: width 1.1s cubic-bezier(0.22,1,0.36,1); }
 
-        /* Progress bar animada */
-        .progress-fill {
-            transition: width 1.1s cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        /* Badge de prioridad */
+        /* Badge prioridades */
         .badge-red    { background:#fef2f2; color:#dc2626; border:1px solid #fecaca; }
         .badge-yellow { background:#fffbeb; color:#b45309; border:1px solid #fde68a; }
-        .badge-green  { background:#f0fdf4; color:#15803d; border:1px solid #bbf7d0; }
+        .badge-green  { background:#ecfdf5; color:#15803d; border:1px solid #a7f3d0; }
 
-        /* Pulso en tarjeta roja */
+        /* Pulso tarjeta urgente */
         @keyframes ring-pulse {
-            0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.18); }
-            50%       { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+            0%,100% { box-shadow:0 0 0 0 rgba(220,38,38,.16); }
+            50%      { box-shadow:0 0 0 6px rgba(220,38,38,0); }
         }
         .card-urgent { animation: ring-pulse 2.4s ease-in-out infinite; }
 
-        /* Botón con efecto premium */
-        .btn-primary {
-            position: relative;
-            overflow: hidden;
-        }
-        .btn-primary::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
-            pointer-events: none;
-        }
+        /* Stage step */
+        .stage-dot { width:28px; height:28px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
 
-        /* Iniciales de avatar */
-        .avatar {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            flex-shrink: 0;
-        }
+        /* Bottom nav */
+        .pb-nav { padding-bottom: calc(76px + env(safe-area-inset-bottom, 0px)); }
+        .bottom-safe { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+        /* Sidebar item hover */
+        .sidebar-item { display:flex; align-items:center; gap:10px; padding:10px 14px; border-radius:12px; font-size:13px; font-weight:500; transition:all .18s; cursor:pointer; }
+        .sidebar-item:hover { background:rgba(255,255,255,.1); }
+        .sidebar-item.active { background:rgba(255,255,255,.18); }
+
+        /* Avatar */
+        .avatar { display:flex; align-items:center; justify-content:center; border-radius:50%; font-weight:600; letter-spacing:.02em; flex-shrink:0; }
+
+        /* Btn shimmer */
+        .btn-shine { position:relative; overflow:hidden; }
+        .btn-shine::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.1) 0%,transparent 60%); pointer-events:none; }
+
+        /* Quick-access card */
+        .quick-card { display:flex; flex-direction:column; align-items:center; gap:6px; padding:14px 8px; background:var(--surface); border:1px solid var(--border); border-radius:18px; cursor:pointer; transition:all .18s; }
+        .quick-card:hover { border-color:var(--border-green); background:var(--primary-light); }
+        .quick-card:active { transform:scale(.96); }
     </style>
 </head>
 <body class="antialiased min-h-screen">
-
     <div id="app"></div>
 
     <script>
@@ -118,11 +115,7 @@
         let view = 'login';
         let selectedPatientId = null;
         let chartInstance = null;
-
-        let chartFilters = {
-            period: 'mensual',
-            month: '5'
-        };
+        let chartFilters = { period: 'mensual', month: '5' };
 
         const mesesNombres = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
 
@@ -131,108 +124,114 @@
                 id: 1,
                 name: 'Valentina Soto',
                 procedure: 'Liposucción Láser Ambulatoria',
-                stage: 'Semana 2 - Kinesiología Postoperatoria',
+                stage: 'Semana 2 — Kinesiología Postoperatoria',
                 priority: 'yellow',
                 nextControl: '28/05/2026',
                 pendingAppointment: 'Sesión de Drenaje Linfático (Semana 2)',
                 currentMilestone: 2,
+                currentDay: 14,
+                totalDays: 180,
                 milestones: [
-                    { day: 'Día 1',   title: 'Procedimiento',  desc: 'Cirugía ambulatoria. Reposo y cuidados iniciales.', completed: true },
-                    { day: 'Día 7',   title: 'Uso de Faja',    desc: 'Uso estricto de faja y postura por 10 a 14 días.', completed: true },
-                    { day: 'Semana 2',title: 'Drenaje Linfático', desc: 'Inicio de 8 a 12 sesiones de kinesiología.', completed: false },
-                    { day: 'Mes 1',   title: 'Reducción 40%',  desc: 'Desinflamación visible del 40-50%.', completed: false },
-                    { day: 'Mes 3',   title: 'Resultado 80%',  desc: 'Resultado avanzado y moldeado evidente.', completed: false },
-                    { day: 'Mes 6',   title: 'Alta Definitiva',desc: 'Resultado final y definitivo.', completed: false },
+                    { day:'Día 1',    title:'Procedimiento',    desc:'Cirugía ambulatoria. Reposo y cuidados iniciales.', completed:true  },
+                    { day:'Día 7',    title:'Uso de Faja',      desc:'Uso estricto de faja y postura por 10 a 14 días.', completed:true  },
+                    { day:'Semana 2', title:'Drenaje Linfático',desc:'Inicio de 8 a 12 sesiones de kinesiología.',       completed:false },
+                    { day:'Mes 1',    title:'Reducción 40%',    desc:'Desinflamación visible del 40-50%.',               completed:false },
+                    { day:'Mes 3',    title:'Resultado 80%',    desc:'Resultado avanzado y moldeado evidente.',          completed:false },
+                    { day:'Mes 6',    title:'Alta Definitiva',  desc:'Resultado final y definitivo.',                   completed:false },
                 ],
                 faqs: [
-                    { q: '¿Debo usar faja de compresión?', a: 'Sí, es obligatorio. Se recomienda cuidados exhaustivos desde el punto de vista de uso de faja y postura de 10 a 14 días para asegurar la mejor recuperación.' },
-                    { q: '¿Cuántas sesiones de drenaje linfático necesito?', a: 'Se recomiendan entre 8 y 12 sesiones distribuidas en las primeras semanas para eliminar líquidos y reducir el edema.' },
-                    { q: '¿Cuándo puedo retomar mis actividades?', a: 'La mayoría de los pacientes pueden retomar sus actividades diarias ligeras en una semana.' }
+                    { q:'¿Debo usar faja de compresión?',                  a:'Sí, es obligatorio. Se recomiendan cuidados exhaustivos de uso de faja y postura de 10 a 14 días para asegurar la mejor recuperación.' },
+                    { q:'¿Cuántas sesiones de drenaje linfático necesito?',a:'Se recomiendan entre 8 y 12 sesiones distribuidas en las primeras semanas para eliminar líquidos y reducir el edema.' },
+                    { q:'¿Cuándo puedo retomar mis actividades?',          a:'La mayoría de los pacientes puede retomar actividades diarias ligeras en una semana.' }
                 ],
-                quote: "La paciencia y la disciplina en tus cuidados son las claves de resultados extraordinarios."
+                quote: 'La paciencia y la disciplina en tus cuidados son las claves de resultados extraordinarios.'
             },
             {
                 id: 2,
                 name: 'Camila Ríos',
                 procedure: 'DRAWNFACE (Marcación Mandibular)',
-                stage: 'Día 5 - Asentamiento',
+                stage: 'Día 5 — Asentamiento',
                 priority: 'green',
                 nextControl: '22/05/2026',
                 pendingAppointment: null,
                 currentMilestone: 1,
+                currentDay: 5,
+                totalDays: 90,
                 milestones: [
-                    { day: 'Día 1',   title: 'Procedimiento',  desc: 'Definición del ángulo mandibular.', completed: true },
-                    { day: 'Día 3-7', title: 'Desinflamación', desc: 'Disminución del edema inicial.', completed: false },
-                    { day: 'Mes 1',   title: 'Efecto Tensor',  desc: 'Producción de colágeno y efecto tensor visible.', completed: false },
-                    { day: 'Mes 3',   title: 'Resultado Final',desc: 'Perfil completamente definido y armónico.', completed: false }
+                    { day:'Día 1',   title:'Procedimiento',   desc:'Definición del ángulo mandibular.',                         completed:true  },
+                    { day:'Día 3-7', title:'Desinflamación',  desc:'Disminución del edema inicial.',                            completed:false },
+                    { day:'Mes 1',   title:'Efecto Tensor',   desc:'Producción de colágeno y efecto tensor visible.',           completed:false },
+                    { day:'Mes 3',   title:'Resultado Final', desc:'Perfil completamente definido y armónico.',                 completed:false },
                 ],
                 faqs: [
-                    { q: '¿Es normal sentir tensión en el cuello?', a: 'Sí, es completamente normal sentir una leve tensión durante los primeros días mientras el tejido se adapta a la estimulación láser.' },
-                    { q: '¿Cuándo veré el resultado definitivo?', a: 'El resultado definitivo del perfilamiento se aprecia hacia el tercer mes por la producción de colágeno.' }
+                    { q:'¿Es normal sentir tensión en el cuello?',    a:'Sí, es completamente normal durante los primeros días mientras el tejido se adapta a la estimulación láser.' },
+                    { q:'¿Cuándo veré el resultado definitivo?',      a:'El resultado definitivo se aprecia hacia el tercer mes por la producción de colágeno.' }
                 ],
-                quote: "Descubre cómo un perfil definido puede potenciar tu confianza."
+                quote: 'Descubre cómo un perfil definido puede potenciar tu confianza.'
             },
             {
                 id: 3,
                 name: 'Sofía Araneda',
                 procedure: 'Armonización Facial Completa',
-                stage: 'Día 1 - Inflamación Inicial',
+                stage: 'Día 1 — Inflamación Inicial',
                 priority: 'red',
                 nextControl: '18/05/2026',
                 pendingAppointment: 'Control Primeras 48 Hrs',
                 currentMilestone: 0,
+                currentDay: 1,
+                totalDays: 365,
                 milestones: [
-                    { day: 'Día 1',   title: 'Aplicación',    desc: 'Relleno de ojeras o pómulos. Inflamación.', completed: true },
-                    { day: 'Día 3',   title: 'Baja Edema',    desc: 'Reducción de hinchazón o posibles hematomas.', completed: false },
-                    { day: 'Semana 2',title: 'Asentamiento',  desc: 'El ácido hialurónico se integra al tejido.', completed: false },
-                    { day: 'Mes 12',  title: 'Re-evaluación', desc: 'El producto comienza a reabsorberse.', completed: false }
+                    { day:'Día 1',    title:'Aplicación',     desc:'Relleno de ojeras o pómulos. Inflamación.',                completed:true  },
+                    { day:'Día 3',    title:'Baja Edema',     desc:'Reducción de hinchazón o posibles hematomas.',             completed:false },
+                    { day:'Semana 2', title:'Asentamiento',   desc:'El ácido hialurónico se integra al tejido.',               completed:false },
+                    { day:'Mes 12',   title:'Re-evaluación',  desc:'El producto comienza a reabsorberse.',                    completed:false },
                 ],
                 faqs: [
-                    { q: '¿Puedo hacer ejercicio hoy?', a: 'Se recomienda evitar el ejercicio intenso, saunas y exposición solar directa durante las primeras 48 horas.' },
-                    { q: 'Apareció un pequeño moretón, ¿es normal?', a: 'Sí, al ser un procedimiento inyectable pueden surgir pequeños hematomas que desaparecerán en 3 a 5 días.' }
+                    { q:'¿Puedo hacer ejercicio hoy?',                     a:'Se recomienda evitar el ejercicio intenso, saunas y exposición solar directa durante las primeras 48 horas.' },
+                    { q:'Apareció un pequeño moretón, ¿es normal?',       a:'Sí, al ser un procedimiento inyectable pueden surgir pequeños hematomas que desaparecerán en 3 a 5 días.' }
                 ],
-                quote: "Armonía, volumen y luz para tu rostro."
+                quote: 'Armonía, volumen y luz para tu rostro.'
             },
         ];
 
         // --- UTILIDADES ---
-        function getInitials(name) {
-            return name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
-        }
+        function getInitials(n) { return n.split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase(); }
+        function priorityLabel(p) { return {red:'Urgente',yellow:'Seguimiento',green:'Estable'}[p]; }
 
-        function priorityLabel(p) {
-            return { red: 'Urgente', yellow: 'Seguimiento', green: 'Estable' }[p];
+        function svgCircleProgress(pct, size=72, sw=5) {
+            const r = (size-sw)/2, c = 2*Math.PI*r;
+            const dash = (pct/100*c).toFixed(2), gap = (c-pct/100*c).toFixed(2);
+            return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+                <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="${sw}"/>
+                <circle cx="${size/2}" cy="${size/2}" r="${r}" fill="none" stroke="#c49a54" stroke-width="${sw}"
+                    stroke-dasharray="${dash} ${gap}" stroke-linecap="round"
+                    transform="rotate(-90 ${size/2} ${size/2})"/>
+                <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central"
+                    fill="white" font-size="13" font-weight="700" font-family="Montserrat,sans-serif">${pct}%</text>
+            </svg>`;
         }
 
         // --- LÓGICA ---
         function sortPatients() {
-            const w = { 'red': 1, 'yellow': 2, 'green': 3 };
-            patientsData.sort((a, b) => w[a.priority] - w[b.priority]);
+            const w={red:1,yellow:2,green:3};
+            patientsData.sort((a,b)=>w[a.priority]-w[b.priority]);
         }
 
         function setView(newView) {
             view = newView;
             render();
-            if (view === 'doctor') setTimeout(initChart, 50);
+            if (view==='doctor') setTimeout(initChart,50);
         }
 
-        function loginAsPatient(id) {
-            selectedPatientId = id;
-            setView('patient');
-        }
+        function loginAsPatient(id) { selectedPatientId=id; setView('patient'); }
 
         function setPriority(patientId, newPriority) {
-            const patient = patientsData.find(p => p.id === patientId);
-            if (patient) {
-                patient.priority = newPriority;
-                render();
-                if (view === 'doctor') setTimeout(initChart, 50);
-            }
+            const p = patientsData.find(p=>p.id===patientId);
+            if(p){ p.priority=newPriority; render(); if(view==='doctor') setTimeout(initChart,50); }
         }
 
-        function toggleFAQ(element) {
-            const body = element.nextElementSibling;
-            const icon = element.querySelector('svg');
+        function toggleFAQ(el) {
+            const body=el.nextElementSibling, icon=el.querySelector('svg');
             body.classList.toggle('open');
             icon.style.transform = body.classList.contains('open') ? 'rotate(180deg)' : 'rotate(0deg)';
         }
@@ -240,79 +239,45 @@
         function handleFilterChange() {
             chartFilters.period = document.getElementById('periodFilter').value;
             chartFilters.month  = document.getElementById('monthFilter').value;
-            const monthSelect   = document.getElementById('monthFilter');
-            if (chartFilters.period === 'anual') {
-                monthSelect.disabled = true;
-                monthSelect.classList.add('opacity-40', 'cursor-not-allowed');
-            } else {
-                monthSelect.disabled = false;
-                monthSelect.classList.remove('opacity-40', 'cursor-not-allowed');
-            }
+            const ms = document.getElementById('monthFilter');
+            if(chartFilters.period==='anual'){ ms.disabled=true; ms.classList.add('opacity-40','cursor-not-allowed'); }
+            else { ms.disabled=false; ms.classList.remove('opacity-40','cursor-not-allowed'); }
             initChart();
         }
 
         // --- GRÁFICO ---
         function initChart() {
             const ctx = document.getElementById('proceduresChart');
-            if (!ctx) return;
-            if (chartInstance) chartInstance.destroy();
-
-            let labels = [], data = [], chartTitle = '';
-            const monthFactor = parseInt(chartFilters.month) / 10 + 0.5;
-
-            if (chartFilters.period === 'anual') {
-                labels = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-                data = [120,140,115,160,185,170,200,220,190,210,250,280];
-                chartTitle = 'Total Procedimientos Anuales';
-            } else if (chartFilters.period === 'mensual') {
-                labels = ['Lipo Láser','Drawn Face','Armonización','Toxina B.','Lipomarcación'];
-                data = [45,25,30,50,15].map(v => Math.round(v * monthFactor));
-                chartTitle = `Procedimientos en ${mesesNombres[parseInt(chartFilters.month) - 1]}`;
+            if(!ctx) return;
+            if(chartInstance) chartInstance.destroy();
+            let labels=[], data=[], chartTitle='';
+            const mf = parseInt(chartFilters.month)/10+0.5;
+            if(chartFilters.period==='anual'){
+                labels=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+                data=[120,140,115,160,185,170,200,220,190,210,250,280];
+                chartTitle='Total Procedimientos Anuales';
+            } else if(chartFilters.period==='mensual'){
+                labels=['Lipo Láser','Drawn Face','Armonización','Toxina B.','Lipomarcación'];
+                data=[45,25,30,50,15].map(v=>Math.round(v*mf));
+                chartTitle=`Procedimientos — ${mesesNombres[parseInt(chartFilters.month)-1]}`;
             } else {
-                labels = ['Lun','Mar','Mié','Jue','Vie','Sáb'];
-                data = [8,5,12,10,16,7].map(v => Math.round(v * monthFactor));
-                chartTitle = `Flujo Diario (${mesesNombres[parseInt(chartFilters.month) - 1]})`;
+                labels=['Lun','Mar','Mié','Jue','Vie','Sáb'];
+                data=[8,5,12,10,16,7].map(v=>Math.round(v*mf));
+                chartTitle=`Flujo Diario — ${mesesNombres[parseInt(chartFilters.month)-1]}`;
             }
-
             chartInstance = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels,
-                    datasets: [{
-                        label: chartTitle,
-                        data,
-                        backgroundColor: '#a8936a',
-                        borderRadius: chartFilters.period === 'anual' ? 4 : 7,
-                        barThickness: chartFilters.period === 'anual' ? 12 : 24
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    animation: { duration: 500, easing: 'easeOutQuart' },
-                    plugins: {
-                        legend: { display: false },
-                        tooltip: {
-                            backgroundColor: '#292524',
-                            padding: 10,
-                            cornerRadius: 10,
-                            callbacks: {
-                                label: ctx => ` ${ctx.parsed.y} procedimientos`
-                            }
-                        }
+                type:'bar',
+                data:{ labels, datasets:[{ label:chartTitle, data, backgroundColor:'#2a4a3c', borderRadius:8, barThickness:chartFilters.period==='anual'?12:22 }] },
+                options:{
+                    responsive:true, maintainAspectRatio:false,
+                    animation:{duration:450,easing:'easeOutQuart'},
+                    plugins:{
+                        legend:{display:false},
+                        tooltip:{ backgroundColor:'#1e3a2e', padding:10, cornerRadius:10, callbacks:{ label:c=>` ${c.parsed.y} procedimientos` } }
                     },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            grid: { borderDash: [4,4], color: '#f5f4f1' },
-                            border: { display: false },
-                            ticks: { color: '#a8a29e', font: { size: 10 } }
-                        },
-                        x: {
-                            grid: { display: false },
-                            border: { display: false },
-                            ticks: { color: '#a8a29e', font: { size: 10 } }
-                        }
+                    scales:{
+                        y:{ beginAtZero:true, grid:{borderDash:[4,4],color:'#ede8df'}, border:{display:false}, ticks:{color:'#9aada5',font:{size:10}} },
+                        x:{ grid:{display:false}, border:{display:false}, ticks:{color:'#9aada5',font:{size:10}} }
                     }
                 }
             });
@@ -320,10 +285,10 @@
 
         // --- RENDER ---
         function render() {
-            const app = document.getElementById('app');
-            if      (view === 'login')   app.innerHTML = getLoginHTML();
-            else if (view === 'doctor')  app.innerHTML = getDoctorHTML();
-            else if (view === 'patient') app.innerHTML = getPatientHTML();
+            const app=document.getElementById('app');
+            if(view==='login')   app.innerHTML=getLoginHTML();
+            else if(view==='doctor')  app.innerHTML=getDoctorHTML();
+            else if(view==='patient') app.innerHTML=getPatientHTML();
             lucide.createIcons();
         }
 
@@ -332,52 +297,69 @@
         // ============================================================
         function getLoginHTML() {
             return `
-            <div class="min-h-screen flex items-center justify-center p-4 bg-[url('https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&q=80')] bg-cover bg-center">
-                <div class="absolute inset-0 bg-stone-950/65 backdrop-blur-sm"></div>
-                <div class="view-enter relative bg-white/97 p-8 rounded-[2rem] shadow-2xl max-w-sm w-full border border-stone-100/80">
+            <div class="min-h-screen flex items-center justify-center p-4"
+                 style="background:linear-gradient(160deg,#1e3a2e 0%,#2a4a3c 55%,#f4efe6 55%)">
 
-                    <!-- Marca -->
-                    <div class="flex flex-col items-center mb-7">
-                        <div class="w-14 h-14 rounded-2xl bg-stone-900 flex items-center justify-center shadow-lg mb-4">
-                            <i data-lucide="sparkles" class="w-6 h-6 text-amber-300"></i>
+                <div class="view-enter w-full max-w-sm flex flex-col gap-4">
+
+                    <!-- Branding card -->
+                    <div class="bg-white/10 backdrop-blur-sm rounded-3xl px-7 pt-7 pb-5 text-white text-center">
+                        <div class="flex items-center justify-center gap-2 mb-4">
+                            <div style="background:rgba(196,154,84,.25);border-radius:12px;padding:10px;">
+                                <i data-lucide="leaf" style="width:22px;height:22px;color:#c49a54;"></i>
+                            </div>
                         </div>
-                        <h1 class="text-3xl font-serif text-stone-800 leading-tight">Hunza Care</h1>
-                        <p class="text-stone-400 text-xs mt-1 tracking-wider uppercase">Portal de Seguimiento Clínico</p>
+                        <p class="text-[10px] tracking-[0.3em] uppercase font-medium text-green-300 mb-1">Clínica</p>
+                        <h1 class="font-serif text-4xl font-semibold mb-1 text-white">HUNZA</h1>
+                        <p class="text-[11px] tracking-[0.2em] uppercase text-green-300/80">Medicina Estética con Base Médica</p>
                     </div>
 
-                    <!-- Acceso médico -->
-                    <button onclick="setView('doctor')" class="btn-primary w-full py-3.5 px-4 bg-stone-900 text-white rounded-2xl hover:bg-stone-700 transition-all flex items-center justify-center gap-2 font-semibold shadow-lg shadow-stone-900/20 text-sm">
-                        <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-                        Dashboard · Dra. Macarena
-                    </button>
+                    <!-- Login card -->
+                    <div class="bg-white rounded-3xl shadow-xl p-6" style="border:1px solid #ddd6c9;">
 
-                    <!-- Divisor -->
-                    <div class="relative my-6">
-                        <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-150"></div></div>
-                        <div class="relative flex justify-center">
-                            <span class="bg-white px-3 text-[11px] text-stone-400 font-medium uppercase tracking-widest">Acceso Pacientes</span>
+                        <!-- Doctor -->
+                        <button onclick="setView('doctor')"
+                            class="btn-shine w-full py-3.5 px-4 rounded-2xl font-semibold text-sm flex items-center justify-center gap-2 mb-5 shadow-lg"
+                            style="background:#2a4a3c;color:white;">
+                            <i data-lucide="layout-dashboard" style="width:16px;height:16px;"></i>
+                            Dashboard · Dra. Macarena
+                        </button>
+
+                        <!-- Divisor -->
+                        <div class="relative mb-4">
+                            <div class="absolute inset-0 flex items-center"><div class="w-full" style="border-top:1px solid #e5dfd5;"></div></div>
+                            <div class="relative flex justify-center">
+                                <span class="bg-white px-3 text-[11px] uppercase tracking-widest font-medium" style="color:#9aada5;">Acceso Pacientes</span>
+                            </div>
                         </div>
-                    </div>
 
-                    <!-- Pacientes -->
-                    <div class="flex flex-col gap-2.5">
-                        ${patientsData.map(p => `
-                        <button onclick="loginAsPatient(${p.id})" class="group w-full py-3 px-4 bg-stone-50 hover:bg-stone-100 border border-stone-200 hover:border-stone-300 text-stone-700 rounded-2xl transition-all flex items-center gap-3">
-                            <div class="avatar w-9 h-9 text-sm ${p.priority === 'red' ? 'bg-red-100 text-red-700' : p.priority === 'yellow' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">
-                                ${getInitials(p.name)}
-                            </div>
-                            <div class="flex-1 text-left min-w-0">
-                                <p class="font-semibold text-sm text-stone-800 truncate">${p.name}</p>
-                                <p class="text-[11px] text-stone-400 truncate">${p.procedure}</p>
-                            </div>
-                            <div class="flex items-center gap-2 shrink-0">
-                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${p.priority === 'red' ? 'badge-red' : p.priority === 'yellow' ? 'badge-yellow' : 'badge-green'}">
+                        <!-- Pacientes -->
+                        <div class="flex flex-col gap-2">
+                            ${patientsData.map(p=>`
+                            <button onclick="loginAsPatient(${p.id})"
+                                class="group w-full py-3 px-4 rounded-2xl transition-all flex items-center gap-3"
+                                style="background:#f4efe6;border:1px solid #ddd6c9;">
+                                <div class="avatar w-9 h-9 text-sm ${p.priority==='red'?'bg-red-100 text-red-700':p.priority==='yellow'?'bg-amber-100 text-amber-800':'bg-emerald-100 text-emerald-800'}">
+                                    ${getInitials(p.name)}
+                                </div>
+                                <div class="flex-1 text-left min-w-0">
+                                    <p class="font-semibold text-sm truncate" style="color:#1a2820;">${p.name}</p>
+                                    <p class="text-[11px] truncate" style="color:#9aada5;">${p.procedure}</p>
+                                </div>
+                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full shrink-0 ${p.priority==='red'?'badge-red':p.priority==='yellow'?'badge-yellow':'badge-green'}">
                                     ${priorityLabel(p.priority)}
                                 </span>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-stone-300 group-hover:text-stone-500 transition"></i>
-                            </div>
-                        </button>
-                        `).join('')}
+                            </button>
+                            `).join('')}
+                        </div>
+                    </div>
+
+                    <!-- Valores -->
+                    <div class="grid grid-cols-4 gap-2 px-1">
+                        ${['Ética','Responsabilidad','Conocimiento','Cordialidad'].map(v=>`
+                        <div class="text-center">
+                            <p class="text-[10px] font-medium" style="color:rgba(255,255,255,.5);">${v}</p>
+                        </div>`).join('')}
                     </div>
                 </div>
             </div>`;
@@ -388,142 +370,212 @@
         // ============================================================
         function getDoctorHTML() {
             sortPatients();
-            const total          = patientsData.length;
-            const atencionUrgente = patientsData.filter(p => p.priority === 'red').length;
-            const estables        = patientsData.filter(p => p.priority === 'green').length;
+            const total=patientsData.length;
+            const urgentes=patientsData.filter(p=>p.priority==='red').length;
+            const estables=patientsData.filter(p=>p.priority==='green').length;
+
+            const sidebarItems = [
+                {icon:'layout-dashboard', label:'Panel', active:true},
+                {icon:'activity',         label:'Evolución'},
+                {icon:'calendar',         label:'Citas'},
+                {icon:'file-text',        label:'Documentos'},
+                {icon:'message-circle',   label:'Mensajes'},
+                {icon:'settings',         label:'Indicaciones'},
+            ];
 
             return `
-            <div class="min-h-screen bg-stone-50 pb-20 view-enter">
+            <div class="min-h-screen flex view-enter" style="background:#f4efe6;">
 
-                <!-- Header -->
-                <header class="bg-white border-b border-stone-150 sticky top-0 z-20 shadow-sm">
-                    <div class="max-w-5xl mx-auto px-4 py-3.5 flex items-center justify-between">
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-xl bg-stone-900 flex items-center justify-center shadow-md">
-                                <i data-lucide="stethoscope" class="w-5 h-5 text-white"></i>
+                <!-- Sidebar (desktop) -->
+                <aside class="hidden md:flex flex-col w-56 fixed top-0 left-0 h-screen z-30 pt-7 pb-5"
+                       style="background:#2a4a3c;">
+                    <!-- Logo -->
+                    <div class="px-5 mb-8">
+                        <div class="flex items-center gap-2.5">
+                            <div style="background:rgba(196,154,84,.2);border-radius:10px;padding:7px;">
+                                <i data-lucide="leaf" style="width:16px;height:16px;color:#c49a54;"></i>
                             </div>
                             <div>
-                                <h2 class="font-serif font-semibold text-base leading-tight text-stone-800">Dra. Macarena Gutiérrez</h2>
-                                <p class="text-[10px] text-stone-400 uppercase tracking-widest">Directora Médica · Hunza</p>
+                                <p class="font-serif text-lg font-semibold text-white leading-none">HUNZA</p>
+                                <p class="text-[9px] text-green-300/70 tracking-widest uppercase">Clínica</p>
                             </div>
                         </div>
-                        <button onclick="setView('login')" class="flex items-center gap-1.5 text-xs text-stone-400 hover:text-stone-700 transition px-3 py-2 rounded-xl hover:bg-stone-50">
-                            <i data-lucide="log-out" class="w-4 h-4"></i>
-                            <span class="hidden sm:inline">Salir</span>
+                    </div>
+                    <!-- Nav -->
+                    <nav class="flex-1 px-3 flex flex-col gap-1">
+                        ${sidebarItems.map(i=>`
+                        <div class="sidebar-item${i.active?' active':''}" style="color:${i.active?'white':'rgba(255,255,255,.55)'};">
+                            <i data-lucide="${i.icon}" style="width:16px;height:16px;flex-shrink:0;"></i>
+                            <span>${i.label}</span>
+                        </div>`).join('')}
+                    </nav>
+                    <!-- Perfil -->
+                    <div class="px-3 pt-4" style="border-top:1px solid rgba(255,255,255,.1);">
+                        <div class="flex items-center gap-3 px-3 py-2">
+                            <div class="avatar w-9 h-9 text-sm" style="background:rgba(255,255,255,.15);color:white;">MG</div>
+                            <div class="flex-1 min-w-0">
+                                <p class="text-xs font-semibold text-white truncate">Dra. Macarena</p>
+                                <p class="text-[10px]" style="color:rgba(255,255,255,.45);">Directora Médica</p>
+                            </div>
+                        </div>
+                        <button onclick="setView('login')" class="sidebar-item w-full mt-1" style="color:rgba(255,255,255,.45);">
+                            <i data-lucide="log-out" style="width:15px;height:15px;"></i>
+                            <span>Cerrar sesión</span>
+                        </button>
+                    </div>
+                </aside>
+
+                <!-- Mobile header -->
+                <header class="md:hidden fixed top-0 left-0 right-0 z-30 flex items-center justify-between px-4 py-3.5 shadow-sm"
+                        style="background:#2a4a3c;">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="leaf" style="width:16px;height:16px;color:#c49a54;"></i>
+                        <span class="font-serif text-white text-base font-semibold">HUNZA</span>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <div class="avatar w-8 h-8 text-xs" style="background:rgba(255,255,255,.15);color:white;">MG</div>
+                        <button onclick="setView('login')" style="color:rgba(255,255,255,.6);padding:6px;">
+                            <i data-lucide="log-out" style="width:16px;height:16px;"></i>
                         </button>
                     </div>
                 </header>
 
-                <main class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
+                <!-- Contenido principal -->
+                <main class="flex-1 md:ml-56 pt-16 md:pt-0 pb-10">
+                    <div class="max-w-4xl mx-auto px-4 py-6">
 
-                    <!-- Columna izquierda -->
-                    <div class="w-full md:w-1/3 flex flex-col gap-5">
-
-                        <!-- Stats -->
-                        <div class="grid grid-cols-3 gap-3">
-                            <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-sm flex flex-col gap-1">
-                                <div class="w-7 h-7 rounded-lg bg-stone-100 flex items-center justify-center mb-1">
-                                    <i data-lucide="users" class="w-3.5 h-3.5 text-stone-500"></i>
-                                </div>
-                                <p class="text-2xl font-serif text-stone-800 leading-none">${total}</p>
-                                <p class="text-[10px] text-stone-400 font-medium leading-tight">Activos</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-2xl border ${atencionUrgente > 0 ? 'border-red-100' : 'border-stone-100'} shadow-sm flex flex-col gap-1 ${atencionUrgente > 0 ? 'card-urgent' : ''}">
-                                <div class="w-7 h-7 rounded-lg ${atencionUrgente > 0 ? 'bg-red-50' : 'bg-stone-50'} flex items-center justify-center mb-1">
-                                    <i data-lucide="alert-circle" class="w-3.5 h-3.5 ${atencionUrgente > 0 ? 'text-red-500' : 'text-stone-400'}"></i>
-                                </div>
-                                <p class="text-2xl font-serif ${atencionUrgente > 0 ? 'text-red-600' : 'text-stone-300'} leading-none">${atencionUrgente}</p>
-                                <p class="text-[10px] text-stone-400 font-medium leading-tight">Urgentes</p>
-                            </div>
-                            <div class="bg-white p-4 rounded-2xl border border-stone-100 shadow-sm flex flex-col gap-1">
-                                <div class="w-7 h-7 rounded-lg bg-emerald-50 flex items-center justify-center mb-1">
-                                    <i data-lucide="check-circle-2" class="w-3.5 h-3.5 text-emerald-500"></i>
-                                </div>
-                                <p class="text-2xl font-serif text-emerald-600 leading-none">${estables}</p>
-                                <p class="text-[10px] text-stone-400 font-medium leading-tight">Estables</p>
-                            </div>
+                        <!-- Titulo -->
+                        <div class="mb-6">
+                            <h2 class="font-serif text-2xl" style="color:#1a2820;">Panel de monitoreo</h2>
+                            <p class="text-sm" style="color:#6c7e75;">Visión general de tus pacientes activos</p>
                         </div>
 
-                        <!-- Gráfico -->
-                        <div class="bg-white p-5 rounded-2xl shadow-sm border border-stone-100 flex-1">
-                            <h3 class="font-serif text-base text-stone-800 flex items-center gap-2 mb-4">
-                                <i data-lucide="bar-chart-3" class="w-4 h-4 text-[#b5956a]"></i> Análisis Clínico
-                            </h3>
-                            <div class="flex gap-2 mb-5">
-                                <select id="periodFilter" onchange="handleFilterChange()" class="flex-1 text-xs border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-stone-200 outline-none transition-all">
-                                    <option value="semanal"  ${chartFilters.period === 'semanal'  ? 'selected' : ''}>Semanal</option>
-                                    <option value="mensual"  ${chartFilters.period === 'mensual'  ? 'selected' : ''}>Mensual</option>
-                                    <option value="anual"    ${chartFilters.period === 'anual'    ? 'selected' : ''}>Anual</option>
-                                </select>
-                                <select id="monthFilter" onchange="handleFilterChange()" class="flex-1 text-xs border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-stone-200 outline-none transition-all ${chartFilters.period === 'anual' ? 'opacity-40 cursor-not-allowed' : ''}" ${chartFilters.period === 'anual' ? 'disabled' : ''}>
-                                    ${mesesNombres.map((mes, idx) => `<option value="${idx+1}" ${parseInt(chartFilters.month) === idx+1 ? 'selected' : ''}>${mes}</option>`).join('')}
-                                </select>
-                            </div>
-                            <div class="h-52 w-full">
-                                <canvas id="proceduresChart"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                        <div class="flex flex-col md:flex-row gap-5">
 
-                    <!-- Columna derecha: pacientes -->
-                    <div class="w-full md:w-2/3">
-                        <h3 class="font-serif text-xl text-stone-800 mb-4 px-1">Semáforo de Pacientes</h3>
-                        <div class="space-y-3">
-                            ${patientsData.map(p => `
-                            <div class="bg-white rounded-2xl border ${p.priority === 'red' ? 'border-red-200' : p.priority === 'yellow' ? 'border-amber-200' : 'border-stone-150'} shadow-sm overflow-hidden">
+                            <!-- Columna izquierda -->
+                            <div class="w-full md:w-80 flex flex-col gap-4 shrink-0">
 
-                                <!-- Barra de color superior -->
-                                <div class="h-1 w-full ${p.priority === 'red' ? 'bg-red-400' : p.priority === 'yellow' ? 'bg-amber-400' : 'bg-emerald-400'}"></div>
-
-                                <div class="p-5 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
-                                    <div class="flex items-start gap-3 flex-1 min-w-0">
-                                        <!-- Avatar -->
-                                        <div class="avatar w-11 h-11 text-sm shrink-0 mt-0.5 ${p.priority === 'red' ? 'bg-red-100 text-red-700' : p.priority === 'yellow' ? 'bg-amber-100 text-amber-700' : 'bg-emerald-100 text-emerald-700'}">
-                                            ${getInitials(p.name)}
+                                <!-- Stats -->
+                                <div class="grid grid-cols-3 gap-3">
+                                    <div class="rounded-2xl p-4 bg-white" style="border:1px solid #ddd6c9;">
+                                        <div class="w-7 h-7 rounded-xl flex items-center justify-center mb-2"
+                                             style="background:#e5eeea;">
+                                            <i data-lucide="users" style="width:14px;height:14px;color:#2a4a3c;"></i>
                                         </div>
-
-                                        <div class="flex-1 min-w-0">
-                                            <div class="flex flex-wrap items-center gap-2 mb-1">
-                                                <h4 class="font-semibold text-stone-800">${p.name}</h4>
-                                                <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${p.priority === 'red' ? 'badge-red' : p.priority === 'yellow' ? 'badge-yellow' : 'badge-green'}">
-                                                    ${priorityLabel(p.priority)}
-                                                </span>
-                                            </div>
-                                            <p class="text-xs text-stone-500 truncate mb-1.5">${p.procedure}</p>
-                                            <div class="flex flex-wrap items-center gap-3 text-xs text-stone-400">
-                                                <span class="flex items-center gap-1">
-                                                    <i data-lucide="clock" class="w-3.5 h-3.5"></i> ${p.stage}
-                                                </span>
-                                                <span class="flex items-center gap-1">
-                                                    <i data-lucide="calendar" class="w-3.5 h-3.5"></i> Control: ${p.nextControl}
-                                                </span>
-                                            </div>
-                                        </div>
+                                        <p class="text-2xl font-serif" style="color:#1a2820;">${total}</p>
+                                        <p class="text-[10px] font-medium mt-0.5" style="color:#9aada5;">Activos</p>
                                     </div>
-
-                                    <div class="flex items-center gap-3 shrink-0 self-end sm:self-center">
-                                        <!-- Selector semáforo -->
-                                        <div class="flex gap-1.5 p-1.5 bg-stone-50 rounded-full border border-stone-200">
-                                            <button onclick="setPriority(${p.id}, 'green')" title="Estable" class="w-9 h-9 rounded-full transition-all flex items-center justify-center ${p.priority === 'green' ? 'bg-emerald-500 shadow scale-110' : 'bg-white hover:bg-emerald-50'}">
-                                                <div class="w-2.5 h-2.5 rounded-full ${p.priority === 'green' ? 'bg-white' : 'bg-emerald-400'}"></div>
-                                            </button>
-                                            <button onclick="setPriority(${p.id}, 'yellow')" title="Seguimiento" class="w-9 h-9 rounded-full transition-all flex items-center justify-center ${p.priority === 'yellow' ? 'bg-amber-400 shadow scale-110' : 'bg-white hover:bg-amber-50'}">
-                                                <div class="w-2.5 h-2.5 rounded-full ${p.priority === 'yellow' ? 'bg-white' : 'bg-amber-400'}"></div>
-                                            </button>
-                                            <button onclick="setPriority(${p.id}, 'red')" title="Urgente" class="w-9 h-9 rounded-full transition-all flex items-center justify-center ${p.priority === 'red' ? 'bg-red-500 shadow scale-110' : 'bg-white hover:bg-red-50'}">
-                                                <div class="w-2.5 h-2.5 rounded-full ${p.priority === 'red' ? 'bg-white' : 'bg-red-500'}"></div>
-                                            </button>
+                                    <div class="rounded-2xl p-4 ${urgentes>0?'card-urgent':''}"
+                                         style="background:${urgentes>0?'#fff5f5':'white'};border:1px solid ${urgentes>0?'#fecaca':'#ddd6c9'};">
+                                        <div class="w-7 h-7 rounded-xl flex items-center justify-center mb-2"
+                                             style="background:${urgentes>0?'#fee2e2':'#f4efe6'};">
+                                            <i data-lucide="alert-circle" style="width:14px;height:14px;color:${urgentes>0?'#dc2626':'#9aada5'};"></i>
                                         </div>
+                                        <p class="text-2xl font-serif" style="color:${urgentes>0?'#dc2626':'#c8bfb4'};">${urgentes}</p>
+                                        <p class="text-[10px] font-medium mt-0.5" style="color:#9aada5;">Urgentes</p>
+                                    </div>
+                                    <div class="rounded-2xl p-4 bg-white" style="border:1px solid #ddd6c9;">
+                                        <div class="w-7 h-7 rounded-xl flex items-center justify-center mb-2"
+                                             style="background:#ecfdf5;">
+                                            <i data-lucide="check-circle-2" style="width:14px;height:14px;color:#15803d;"></i>
+                                        </div>
+                                        <p class="text-2xl font-serif" style="color:#15803d;">${estables}</p>
+                                        <p class="text-[10px] font-medium mt-0.5" style="color:#9aada5;">Estables</p>
+                                    </div>
+                                </div>
 
-                                        <!-- Ver ficha -->
-                                        <button onclick="loginAsPatient(${p.id})" class="flex items-center gap-1.5 text-xs font-semibold text-stone-600 hover:text-stone-900 bg-stone-50 hover:bg-stone-100 border border-stone-200 px-3 py-2 rounded-xl transition-all">
-                                            <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
-                                            <span class="hidden sm:inline">Ver Ficha</span>
-                                        </button>
+                                <!-- Gráfico -->
+                                <div class="bg-white rounded-2xl p-5 flex-1" style="border:1px solid #ddd6c9;">
+                                    <h3 class="font-serif text-base mb-4 flex items-center gap-2" style="color:#1a2820;">
+                                        <i data-lucide="bar-chart-3" style="width:16px;height:16px;color:#c49a54;"></i>
+                                        Análisis Clínico
+                                    </h3>
+                                    <div class="flex gap-2 mb-4">
+                                        <select id="periodFilter" onchange="handleFilterChange()"
+                                            class="flex-1 text-xs rounded-xl px-3 py-2 font-medium outline-none transition-all"
+                                            style="border:1px solid #ddd6c9;background:#f4efe6;color:#3d5247;">
+                                            <option value="semanal"  ${chartFilters.period==='semanal' ?'selected':''}>Semanal</option>
+                                            <option value="mensual"  ${chartFilters.period==='mensual' ?'selected':''}>Mensual</option>
+                                            <option value="anual"    ${chartFilters.period==='anual'   ?'selected':''}>Anual</option>
+                                        </select>
+                                        <select id="monthFilter" onchange="handleFilterChange()"
+                                            class="flex-1 text-xs rounded-xl px-3 py-2 font-medium outline-none transition-all ${chartFilters.period==='anual'?'opacity-40 cursor-not-allowed':''}"
+                                            style="border:1px solid #ddd6c9;background:#f4efe6;color:#3d5247;"
+                                            ${chartFilters.period==='anual'?'disabled':''}>
+                                            ${mesesNombres.map((m,i)=>`<option value="${i+1}" ${parseInt(chartFilters.month)===i+1?'selected':''}>${m}</option>`).join('')}
+                                        </select>
+                                    </div>
+                                    <div style="height:200px;">
+                                        <canvas id="proceduresChart"></canvas>
                                     </div>
                                 </div>
                             </div>
-                            `).join('')}
+
+                            <!-- Columna derecha: pacientes -->
+                            <div class="flex-1 min-w-0">
+                                <h3 class="font-serif text-lg mb-4" style="color:#1a2820;">Semáforo de Pacientes</h3>
+                                <div class="flex flex-col gap-3">
+                                    ${patientsData.map(p=>`
+                                    <div class="bg-white rounded-2xl overflow-hidden ${p.priority==='red'?'card-urgent':''}"
+                                         style="border:1px solid ${p.priority==='red'?'#fecaca':p.priority==='yellow'?'#fde68a':'#c5d8cf'};">
+                                        <!-- Barra superior de color -->
+                                        <div class="h-1 w-full" style="background:${p.priority==='red'?'#ef4444':p.priority==='yellow'?'#f59e0b':'#22c55e'};"></div>
+                                        <div class="p-4 flex items-center gap-3">
+                                            <!-- Avatar -->
+                                            <div class="avatar w-11 h-11 text-sm shrink-0"
+                                                 style="background:${p.priority==='red'?'#fef2f2':p.priority==='yellow'?'#fffbeb':'#f0fdf4'};
+                                                        color:${p.priority==='red'?'#dc2626':p.priority==='yellow'?'#b45309':'#15803d'};">
+                                                ${getInitials(p.name)}
+                                            </div>
+                                            <!-- Info -->
+                                            <div class="flex-1 min-w-0">
+                                                <div class="flex flex-wrap items-center gap-2 mb-1">
+                                                    <span class="font-semibold text-sm" style="color:#1a2820;">${p.name}</span>
+                                                    <span class="text-[10px] font-semibold px-2 py-0.5 rounded-full ${p.priority==='red'?'badge-red':p.priority==='yellow'?'badge-yellow':'badge-green'}">
+                                                        ${priorityLabel(p.priority)}
+                                                    </span>
+                                                </div>
+                                                <p class="text-xs truncate mb-1" style="color:#6c7e75;">${p.procedure}</p>
+                                                <div class="flex flex-wrap gap-3 text-xs" style="color:#9aada5;">
+                                                    <span class="flex items-center gap-1">
+                                                        <i data-lucide="clock" style="width:12px;height:12px;"></i> ${p.stage}
+                                                    </span>
+                                                    <span class="flex items-center gap-1">
+                                                        <i data-lucide="calendar" style="width:12px;height:12px;"></i> ${p.nextControl}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <!-- Controles -->
+                                            <div class="flex items-center gap-2 shrink-0">
+                                                <div class="flex gap-1 p-1.5 rounded-full" style="background:#f4efe6;border:1px solid #ddd6c9;">
+                                                    <button onclick="setPriority(${p.id},'green')" title="Estable"
+                                                        class="w-8 h-8 rounded-full transition-all flex items-center justify-center"
+                                                        style="background:${p.priority==='green'?'#22c55e':'white'};${p.priority==='green'?'transform:scale(1.1);box-shadow:0 2px 8px rgba(34,197,94,.35);':''}">
+                                                        <div class="w-2.5 h-2.5 rounded-full" style="background:${p.priority==='green'?'white':'#22c55e'};"></div>
+                                                    </button>
+                                                    <button onclick="setPriority(${p.id},'yellow')" title="Seguimiento"
+                                                        class="w-8 h-8 rounded-full transition-all flex items-center justify-center"
+                                                        style="background:${p.priority==='yellow'?'#f59e0b':'white'};${p.priority==='yellow'?'transform:scale(1.1);box-shadow:0 2px 8px rgba(245,158,11,.35);':''}">
+                                                        <div class="w-2.5 h-2.5 rounded-full" style="background:${p.priority==='yellow'?'white':'#f59e0b'};"></div>
+                                                    </button>
+                                                    <button onclick="setPriority(${p.id},'red')" title="Urgente"
+                                                        class="w-8 h-8 rounded-full transition-all flex items-center justify-center"
+                                                        style="background:${p.priority==='red'?'#ef4444':'white'};${p.priority==='red'?'transform:scale(1.1);box-shadow:0 2px 8px rgba(239,68,68,.35);':''}">
+                                                        <div class="w-2.5 h-2.5 rounded-full" style="background:${p.priority==='red'?'white':'#ef4444'};"></div>
+                                                    </button>
+                                                </div>
+                                                <button onclick="loginAsPatient(${p.id})"
+                                                    class="flex items-center gap-1.5 text-xs font-semibold rounded-xl px-3 py-2 transition-all"
+                                                    style="background:#e5eeea;color:#2a4a3c;border:1px solid #c5d8cf;">
+                                                    <i data-lucide="file-text" style="width:13px;height:13px;"></i>
+                                                    <span class="hidden sm:inline">Ver Ficha</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    `).join('')}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </main>
@@ -534,86 +586,106 @@
         // 3. PORTAL PACIENTE
         // ============================================================
         function getPatientHTML() {
-            const p = patientsData.find(pat => pat.id === selectedPatientId);
-            if (!p) return getLoginHTML();
+            const p = patientsData.find(pat=>pat.id===selectedPatientId);
+            if(!p) return getLoginHTML();
 
-            const completed       = p.milestones.filter(m => m.completed).length;
-            const total           = p.milestones.length;
-            const progressPercent = Math.round((completed / total) * 100);
-            const waGeneralLink   = `https://wa.me/56958049193?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Tengo una consulta general sobre mi postoperatorio de ${p.procedure}.`)}`;
+            const completed    = p.milestones.filter(m=>m.completed).length;
+            const total        = p.milestones.length;
+            const milestonePct = Math.round(completed/total*100);
+            const dayPct       = Math.min(100, Math.round(p.currentDay/p.totalDays*100));
+            const waGeneral    = `https://wa.me/56958049193?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Tengo una consulta sobre mi postoperatorio de ${p.procedure}.`)}`;
+
+            const macroStages = ['Evaluación','Procedimiento','Recuperación','Resultados'];
+            const macroActive = 2; // todos los pacientes están en Recuperación
 
             let appointmentHTML = '';
-            if (p.pendingAppointment) {
-                const waApptLink = `https://wa.me/56958049193?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Me gustaría agendar mi cita para: ${p.pendingAppointment}.`)}`;
-                const isUrgent   = p.priority === 'red';
+            if(p.pendingAppointment) {
+                const waAppt = `https://wa.me/56958049193?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Me gustaría agendar: ${p.pendingAppointment}.`)}`;
+                const urgent = p.priority==='red';
                 appointmentHTML = `
-                <div class="${isUrgent ? 'bg-red-50 border-red-100' : 'bg-blue-50 border-blue-100'} border p-5 rounded-3xl relative overflow-hidden">
-                    <div class="absolute -right-4 -top-4 opacity-[0.07] ${isUrgent ? 'text-red-500' : 'text-blue-500'}">
-                        <i data-lucide="calendar-clock" class="w-32 h-32"></i>
+                <div id="section-cita" class="rounded-3xl p-5 relative overflow-hidden"
+                     style="background:${urgent?'#fff5f5':'#eff8f3'};border:1px solid ${urgent?'#fecaca':'#c5d8cf'};">
+                    <div class="absolute -right-4 -top-4 opacity-[.06]">
+                        <i data-lucide="calendar-clock" style="width:100px;height:100px;color:${urgent?'#dc2626':'#2a4a3c'};"></i>
                     </div>
                     <div class="relative z-10">
-                        <div class="flex items-center gap-2 ${isUrgent ? 'text-red-600' : 'text-blue-600'} mb-2 font-semibold text-xs uppercase tracking-wider">
-                            <i data-lucide="${isUrgent ? 'alert-triangle' : 'bell-ring'}" class="w-3.5 h-3.5"></i>
-                            ${isUrgent ? 'Cita Urgente' : 'Cita Pendiente'}
+                        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider mb-2"
+                             style="color:${urgent?'#dc2626':'#2a4a3c'};">
+                            <i data-lucide="${urgent?'alert-triangle':'bell-ring'}" style="width:14px;height:14px;"></i>
+                            ${urgent?'Cita Urgente':'Cita Pendiente'}
                         </div>
-                        <h3 class="font-serif text-lg text-stone-800 mb-4 leading-tight">${p.pendingAppointment}</h3>
-                        <a href="${waApptLink}" target="_blank" class="inline-flex items-center gap-2 ${isUrgent ? 'bg-red-600 shadow-red-200' : 'bg-blue-600 shadow-blue-200'} text-white px-5 py-2.5 rounded-xl text-sm font-semibold hover:opacity-90 transition-all shadow-md">
-                            Agendar por WhatsApp <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        <h3 class="font-serif text-lg mb-4" style="color:#1a2820;">${p.pendingAppointment}</h3>
+                        <a href="${waAppt}" target="_blank"
+                           class="btn-shine inline-flex items-center gap-2 text-white text-sm font-semibold px-5 py-2.5 rounded-xl shadow-md transition-all hover:opacity-90"
+                           style="background:${urgent?'#dc2626':'#2a4a3c'};">
+                            Agendar por WhatsApp
+                            <i data-lucide="arrow-right" style="width:15px;height:15px;"></i>
                         </a>
                     </div>
                 </div>`;
             }
 
             return `
-            <div class="min-h-screen bg-stone-50 flex flex-col pb-8 view-enter">
+            <div class="min-h-screen flex flex-col pb-nav view-enter" style="background:#f4efe6;">
 
                 <!-- Header -->
-                <header class="bg-white/90 backdrop-blur-md sticky top-0 z-20 border-b border-stone-100 shadow-sm">
+                <header class="sticky top-0 z-20 backdrop-blur-md"
+                        style="background:rgba(244,239,230,.9);border-bottom:1px solid #ddd6c9;">
                     <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
-                        <div class="font-serif font-semibold text-stone-800 text-base flex items-center gap-2">
-                            <i data-lucide="sparkles" class="w-4 h-4 text-amber-400"></i> Hunza Care
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="leaf" style="width:16px;height:16px;color:#2a4a3c;"></i>
+                            <span class="font-serif font-semibold text-base" style="color:#2a4a3c;">Hunza Care</span>
                         </div>
-                        <button onclick="setView('login')" class="text-stone-400 hover:text-stone-700 transition p-2 rounded-xl hover:bg-stone-100">
-                            <i data-lucide="x" class="w-5 h-5"></i>
+                        <button onclick="setView('login')"
+                            class="rounded-xl p-2 transition-all"
+                            style="color:#9aada5;" onmouseover="this.style.background='#e5eeea'" onmouseout="this.style.background='transparent'">
+                            <i data-lucide="x" style="width:18px;height:18px;"></i>
                         </button>
                     </div>
                 </header>
 
-                <main class="max-w-md mx-auto w-full flex-1 px-4 py-6 flex flex-col gap-6">
+                <main class="max-w-md mx-auto w-full flex-1 px-4 py-5 flex flex-col gap-5">
 
-                    <!-- Hero -->
+                    <!-- Greeting + Hero -->
                     <div>
-                        <div class="flex items-center gap-3 mb-4">
-                            <div class="avatar w-12 h-12 text-base bg-stone-800 text-white shadow-md">
-                                ${getInitials(p.name)}
-                            </div>
+                        <div class="flex items-center justify-between mb-3">
                             <div>
-                                <p class="text-stone-400 text-xs font-medium uppercase tracking-wider">Evolución de</p>
-                                <h1 class="font-serif text-2xl text-stone-800 leading-tight">${p.name}</h1>
+                                <p class="text-xs font-medium mb-0.5" style="color:#9aada5;">Bienvenida de vuelta</p>
+                                <h1 class="font-serif text-2xl leading-tight" style="color:#1a2820;">Hola, ${p.name.split(' ')[0]} 👋</h1>
                             </div>
+                            <div class="avatar w-12 h-12 text-base text-white shadow-md"
+                                 style="background:#2a4a3c;">${getInitials(p.name)}</div>
                         </div>
 
-                        <div class="bg-stone-900 text-white p-6 rounded-[2rem] shadow-xl relative overflow-hidden">
-                            <div class="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-950 opacity-60"></div>
-                            <div class="absolute -right-6 -bottom-6 opacity-[0.07]"><i data-lucide="activity" class="w-48 h-48"></i></div>
-                            <div class="relative z-10">
-                                <p class="text-stone-400 text-[10px] uppercase tracking-widest font-semibold mb-1">Procedimiento</p>
-                                <h2 class="text-xl font-serif mb-4 leading-tight text-white">${p.procedure}</h2>
-                                <div class="inline-flex items-center gap-2 bg-white/15 backdrop-blur-md px-3 py-1.5 rounded-full text-sm font-medium border border-white/10 mb-5">
-                                    <div class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></div>
-                                    ${p.stage}
+                        <!-- Hero card -->
+                        <div class="rounded-[1.75rem] p-6 relative overflow-hidden shadow-lg"
+                             style="background:linear-gradient(135deg,#2a4a3c 0%,#1e3a2e 100%);">
+                            <div class="absolute inset-0 opacity-[.04]">
+                                <i data-lucide="activity" style="width:220px;height:220px;position:absolute;right:-40px;bottom:-40px;color:white;"></i>
+                            </div>
+                            <div class="relative z-10 flex items-start justify-between gap-4">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-[10px] uppercase tracking-widest font-semibold mb-1" style="color:rgba(255,255,255,.5);">Tu tratamiento</p>
+                                    <h2 class="font-serif text-lg text-white leading-snug mb-3">${p.procedure}</h2>
+                                    <div class="inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium"
+                                         style="background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.85);">
+                                        <div class="w-1.5 h-1.5 rounded-full bg-emerald-400" style="animation:pulse 2s infinite;"></div>
+                                        ${p.stage}
+                                    </div>
+                                    <div class="mt-4">
+                                        <div class="flex justify-between mb-1.5">
+                                            <span class="text-[11px]" style="color:rgba(255,255,255,.5);">Día ${p.currentDay} de ${p.totalDays}</span>
+                                            <span class="text-[11px] font-semibold text-white">${dayPct}%</span>
+                                        </div>
+                                        <div class="h-1.5 rounded-full overflow-hidden" style="background:rgba(255,255,255,.15);">
+                                            <div class="h-full rounded-full progress-fill" style="width:${dayPct}%;background:linear-gradient(90deg,#c49a54,#e0b96e);"></div>
+                                        </div>
+                                    </div>
                                 </div>
-
-                                <!-- Progreso -->
-                                <div>
-                                    <div class="flex justify-between items-center mb-2">
-                                        <span class="text-[11px] text-stone-400 font-medium">Progreso de recuperación</span>
-                                        <span class="text-sm font-bold text-white">${progressPercent}%</span>
-                                    </div>
-                                    <div class="h-1.5 bg-white/10 rounded-full overflow-hidden">
-                                        <div class="h-full bg-gradient-to-r from-amber-300 to-amber-400 rounded-full progress-fill" style="width: ${progressPercent}%"></div>
-                                    </div>
-                                    <p class="text-[10px] text-stone-500 mt-1.5">${completed} de ${total} etapas completadas</p>
+                                <!-- Circular progress -->
+                                <div class="shrink-0 flex flex-col items-center gap-1">
+                                    ${svgCircleProgress(milestonePct,76,5)}
+                                    <p class="text-[10px]" style="color:rgba(255,255,255,.45);">${completed}/${total} etapas</p>
                                 </div>
                             </div>
                         </div>
@@ -621,66 +693,204 @@
 
                     ${appointmentHTML}
 
-                    <!-- Línea de tiempo -->
-                    <div>
-                        <h3 class="font-serif text-lg text-stone-800 mb-3 px-1 flex items-center gap-2">
-                            <i data-lucide="calendar-check" class="w-5 h-5 text-[#b5956a]"></i> Línea de Tiempo
-                        </h3>
-                        <div class="flex overflow-x-auto gap-3 pb-4 px-1 no-scrollbar snap-x cursor-grab active:cursor-grabbing">
-                            ${p.milestones.map((m, idx) => {
-                                const isCurrent = !m.completed && (idx === 0 || p.milestones[idx-1].completed);
+                    <!-- Acceso rápido -->
+                    <div id="section-plan">
+                        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#9aada5;">Acceso rápido</p>
+                        <div class="grid grid-cols-4 gap-2">
+                            <a href="${waGeneral}" target="_blank" class="quick-card">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#e5eeea;">
+                                    <i data-lucide="message-circle" style="width:17px;height:17px;color:#2a4a3c;"></i>
+                                </div>
+                                <span class="text-[11px] font-medium text-center leading-tight" style="color:#3d5247;">Mensajes</span>
+                            </a>
+                            <button onclick="document.getElementById('section-cita')?.scrollIntoView({behavior:'smooth'})" class="quick-card">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#f5e8d0;">
+                                    <i data-lucide="calendar" style="width:17px;height:17px;color:#c49a54;"></i>
+                                </div>
+                                <span class="text-[11px] font-medium" style="color:#3d5247;">Citas</span>
+                            </button>
+                            <button onclick="document.getElementById('section-dudas').scrollIntoView({behavior:'smooth'})" class="quick-card">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#e5eeea;">
+                                    <i data-lucide="clipboard-list" style="width:17px;height:17px;color:#2a4a3c;"></i>
+                                </div>
+                                <span class="text-[11px] font-medium" style="color:#3d5247;">Indicaciones</span>
+                            </button>
+                            <button onclick="document.getElementById('section-timeline').scrollIntoView({behavior:'smooth'})" class="quick-card">
+                                <div class="w-9 h-9 rounded-xl flex items-center justify-center" style="background:#e5eeea;">
+                                    <i data-lucide="trending-up" style="width:17px;height:17px;color:#2a4a3c;"></i>
+                                </div>
+                                <span class="text-[11px] font-medium" style="color:#3d5247;">Mi Plan</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Etapas del tratamiento (macro stages) -->
+                    <div class="bg-white rounded-2xl p-5" style="border:1px solid #ddd6c9;">
+                        <p class="text-xs font-semibold uppercase tracking-widest mb-4" style="color:#9aada5;">Etapas del tratamiento</p>
+                        <div class="flex items-center gap-0">
+                            ${macroStages.map((s,i)=>{
+                                const done = i < macroActive;
+                                const current = i === macroActive;
+                                const next = i > macroActive;
                                 return `
-                                <div class="snap-center shrink-0 w-56 bg-white p-5 rounded-3xl border relative transition-all
-                                    ${m.completed ? 'border-stone-800' : isCurrent ? 'border-amber-300 milestone-active' : 'border-stone-200 opacity-60'}">
-                                    ${m.completed ? `<div class="absolute -top-2 -right-2 bg-stone-800 text-white p-1.5 rounded-full shadow-sm"><i data-lucide="check" class="w-3 h-3"></i></div>` : ''}
-                                    ${isCurrent   ? `<div class="absolute -top-2 -right-2 bg-amber-400 text-white p-1.5 rounded-full shadow-sm"><i data-lucide="zap" class="w-3 h-3"></i></div>` : ''}
-                                    <span class="text-[10px] font-bold uppercase tracking-wider mb-1.5 block ${m.completed ? 'text-stone-500' : isCurrent ? 'text-amber-500' : 'text-stone-300'}">${m.day}</span>
-                                    <h4 class="font-serif font-semibold text-stone-800 mb-2 leading-tight text-base">${m.title}</h4>
-                                    <p class="text-xs text-stone-500 leading-relaxed">${m.desc}</p>
-                                    ${idx < p.milestones.length - 1 ? `<div class="absolute top-1/2 -right-3.5 w-3.5 h-px ${m.completed ? 'bg-stone-800' : 'bg-stone-200'}"></div>` : ''}
+                                <div class="flex items-center flex-1 ${i===macroStages.length-1?'flex-none':''}">
+                                    <div class="flex flex-col items-center gap-1.5">
+                                        <div class="stage-dot" style="background:${done?'#2a4a3c':current?'#c49a54':'#e5dfd5'};border:${next?'2px solid #ddd6c9':'none'};">
+                                            ${done?`<i data-lucide="check" style="width:13px;height:13px;color:white;"></i>`:
+                                                   current?`<div style="width:8px;height:8px;background:white;border-radius:50%;"></div>`:
+                                                   `<div style="width:8px;height:8px;background:#c8bfb4;border-radius:50%;"></div>`}
+                                        </div>
+                                        <span class="text-[10px] font-semibold text-center leading-tight whitespace-nowrap"
+                                              style="color:${done?'#2a4a3c':current?'#c49a54':'#b0a898'};">${s}
+                                            ${done?'<br><span style="font-size:9px;color:#9aada5;">✓</span>':''}
+                                            ${current?'<br><span style="font-size:9px;color:#c49a54;">Actual</span>':''}
+                                            ${next&&i===macroActive+1?'<br><span style="font-size:9px;color:#9aada5;">Próximo</span>':''}
+                                        </span>
+                                    </div>
+                                    ${i<macroStages.length-1?`<div class="h-px flex-1 mx-1" style="background:${done?'#2a4a3c':'#ddd6c9'};"></div>`:''}
                                 </div>`;
                             }).join('')}
                         </div>
-                        <p class="text-[10px] text-stone-400 text-center flex items-center justify-center gap-1 mt-1">
-                            <i data-lucide="arrow-left-right" class="w-3 h-3"></i> Desliza para ver más
+                    </div>
+
+                    <!-- Línea de tiempo detallada -->
+                    <div id="section-timeline">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="font-serif text-lg flex items-center gap-2" style="color:#1a2820;">
+                                <i data-lucide="calendar-check" style="width:18px;height:18px;color:#c49a54;"></i>
+                                Línea de Tiempo
+                            </h3>
+                        </div>
+                        <div class="flex overflow-x-auto gap-3 pb-3 px-0.5 no-scrollbar snap-x cursor-grab active:cursor-grabbing">
+                            ${p.milestones.map((m,idx)=>{
+                                const isCurrent = !m.completed && (idx===0 || p.milestones[idx-1].completed);
+                                return `
+                                <div class="snap-center shrink-0 w-52 p-4 rounded-2xl relative transition-all"
+                                     style="background:${m.completed?'#2a4a3c':isCurrent?'white':'white'};
+                                            border:${m.completed?'none':isCurrent?'2px solid #c49a54':'1px solid #ddd6c9'};
+                                            opacity:${!m.completed&&!isCurrent?.7:1};
+                                            box-shadow:${isCurrent?'0 0 0 0 transparent,0 4px 20px rgba(196,154,84,.2)':''};">
+                                    ${m.completed?`<div class="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-sm" style="background:#c49a54;">
+                                        <i data-lucide="check" style="width:11px;height:11px;color:white;"></i></div>`:''}
+                                    ${isCurrent?`<div class="absolute -top-2 -right-2 w-6 h-6 rounded-full flex items-center justify-center shadow-sm" style="background:#c49a54;">
+                                        <i data-lucide="zap" style="width:11px;height:11px;color:white;"></i></div>`:''}
+                                    <span class="text-[10px] font-bold uppercase tracking-wider block mb-1.5"
+                                          style="color:${m.completed?'rgba(255,255,255,.5)':isCurrent?'#c49a54':'#b0a898'};">${m.day}</span>
+                                    <h4 class="font-serif text-base font-semibold mb-1.5 leading-tight"
+                                        style="color:${m.completed?'white':'#1a2820'};">${m.title}</h4>
+                                    <p class="text-xs leading-relaxed" style="color:${m.completed?'rgba(255,255,255,.6)':'#6c7e75'};">${m.desc}</p>
+                                    ${idx<p.milestones.length-1?`<div class="absolute top-1/2 -right-3 w-3 h-px" style="background:${m.completed?'#2a4a3c':'#ddd6c9'};"></div>`:''}
+                                </div>`;
+                            }).join('')}
+                        </div>
+                        <p class="text-[10px] text-center mt-1 flex items-center justify-center gap-1" style="color:#b0a898;">
+                            <i data-lucide="arrow-left-right" style="width:11px;height:11px;"></i> Desliza para ver más
                         </p>
                     </div>
 
-                    <!-- FAQ -->
+                    <!-- Semáforo clínico (perspectiva paciente) -->
                     <div>
-                        <h3 class="font-serif text-lg text-stone-800 mb-3 px-1 flex items-center gap-2">
-                            <i data-lucide="help-circle" class="w-5 h-5 text-[#b5956a]"></i> Cuidados y Dudas
+                        <p class="text-xs font-semibold uppercase tracking-widest mb-3" style="color:#9aada5;">Estado Clínico Actual</p>
+                        <div class="grid grid-cols-3 gap-2">
+                            ${[
+                                {key:'green', emoji:'😊', label:'Todo bien',  sub:'Continúa tu recuperación según lo indicado.',icon:'check-circle-2'},
+                                {key:'yellow',emoji:'😐', label:'Atención',   sub:'Algunos síntomas requieren seguimiento.',icon:'alert-circle'},
+                                {key:'red',   emoji:'⚠️', label:'Alerta',     sub:'Contáctanos para evaluación profesional.',icon:'phone-call'},
+                            ].map(s=>{
+                                const active = p.priority===s.key;
+                                return `
+                                <div class="rounded-2xl p-4 text-center transition-all"
+                                     style="background:${active?(s.key==='green'?'#2a4a3c':s.key==='yellow'?'#f59e0b':'#ef4444'):'white'};
+                                            border:1px solid ${active?'transparent':(s.key==='green'?'#c5d8cf':s.key==='yellow'?'#fde68a':'#fecaca')};
+                                            opacity:${active?1:.55};">
+                                    <div class="text-xl mb-1">${s.emoji}</div>
+                                    <p class="font-semibold text-[11px] leading-tight mb-1"
+                                       style="color:${active?'white':(s.key==='green'?'#2a4a3c':s.key==='yellow'?'#b45309':'#dc2626')};">${s.label}</p>
+                                    <p class="text-[10px] leading-tight" style="color:${active?'rgba(255,255,255,.7)':'#9aada5'};">${s.sub}</p>
+                                </div>`;
+                            }).join('')}
+                        </div>
+                    </div>
+
+                    <!-- FAQ -->
+                    <div id="section-dudas">
+                        <h3 class="font-serif text-lg mb-3 flex items-center gap-2" style="color:#1a2820;">
+                            <i data-lucide="help-circle" style="width:18px;height:18px;color:#c49a54;"></i> Cuidados y Dudas
                         </h3>
-                        <div class="space-y-2">
-                            ${p.faqs.map(faq => `
-                            <div class="bg-white border border-stone-200 rounded-2xl overflow-hidden">
-                                <button onclick="toggleFAQ(this)" class="w-full px-5 py-4 text-left flex justify-between items-center hover:bg-stone-50 transition">
-                                    <span class="font-medium text-sm text-stone-800 pr-4 leading-snug">${faq.q}</span>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-stone-400 transition-transform duration-300 shrink-0"></i>
+                        <div class="flex flex-col gap-2">
+                            ${p.faqs.map(faq=>`
+                            <div class="bg-white rounded-2xl overflow-hidden" style="border:1px solid #ddd6c9;">
+                                <button onclick="toggleFAQ(this)"
+                                    class="w-full px-5 py-4 text-left flex justify-between items-center transition-all"
+                                    style="background:white;" onmouseover="this.style.background='#f4efe6'" onmouseout="this.style.background='white'">
+                                    <span class="font-medium text-sm pr-4 leading-snug" style="color:#1a2820;">${faq.q}</span>
+                                    <i data-lucide="chevron-down" style="width:16px;height:16px;color:#9aada5;transition:transform .3s;flex-shrink:0;"></i>
                                 </button>
                                 <div class="faq-body">
-                                    <div class="px-5 pb-4 pt-3 text-sm text-stone-500 leading-relaxed border-t border-stone-100 bg-stone-50/50">
+                                    <div class="px-5 pb-4 pt-3 text-sm leading-relaxed" style="border-top:1px solid #ede8df;background:#faf7f2;color:#6c7e75;">
                                         ${faq.a}
                                     </div>
                                 </div>
-                            </div>
-                            `).join('')}
+                            </div>`).join('')}
                         </div>
                     </div>
 
                     <!-- Quote -->
-                    <div class="text-center px-6 py-5 bg-stone-900 rounded-3xl relative overflow-hidden">
-                        <div class="absolute inset-0 bg-gradient-to-br from-stone-800 to-stone-950 opacity-60"></div>
-                        <i data-lucide="quote" class="w-6 h-6 text-amber-400/40 mb-2 relative z-10 mx-auto"></i>
-                        <p class="font-serif italic text-stone-200 text-sm leading-relaxed relative z-10">${p.quote}</p>
+                    <div class="rounded-3xl p-6 relative overflow-hidden"
+                         style="background:linear-gradient(135deg,#2a4a3c,#1e3a2e);">
+                        <div class="absolute -right-4 -bottom-4 opacity-[.04]">
+                            <i data-lucide="leaf" style="width:120px;height:120px;color:white;"></i>
+                        </div>
+                        <div class="relative z-10 text-center">
+                            <i data-lucide="quote" style="width:22px;height:22px;color:#c49a54;margin:0 auto 10px;display:block;opacity:.6;"></i>
+                            <p class="font-serif italic text-sm leading-relaxed" style="color:rgba(255,255,255,.85);">"${p.quote}"</p>
+                            <p class="text-[10px] mt-3 font-medium uppercase tracking-widest" style="color:rgba(255,255,255,.3);">Clínica Hunza</p>
+                        </div>
                     </div>
 
-                    <!-- WhatsApp CTA -->
-                    <a href="${waGeneralLink}" target="_blank" class="w-full bg-white border-2 border-[#25D366] text-[#25D366] p-4 rounded-2xl flex items-center justify-center gap-3 hover:bg-green-50 transition-all active:scale-[0.98] font-semibold shadow-sm shadow-green-100">
-                        <svg viewBox="0 0 24 24" class="w-5 h-5 fill-current shrink-0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    <!-- WhatsApp -->
+                    <a href="${waGeneral}" target="_blank"
+                       class="w-full rounded-2xl flex items-center justify-center gap-3 p-4 font-semibold transition-all active:scale-[.98]"
+                       style="background:white;border:2px solid #25D366;color:#25D366;"
+                       onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='white'">
+                        <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#25D366;flex-shrink:0;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
                         Tengo una duda general
                     </a>
                 </main>
+
+                <!-- Bottom navigation -->
+                <nav class="fixed bottom-0 left-0 right-0 z-30 flex items-center justify-around px-2 bottom-safe"
+                     style="background:rgba(255,255,255,.95);border-top:1px solid #ddd6c9;backdrop-filter:blur(12px);padding-top:10px;padding-bottom:max(14px,env(safe-area-inset-bottom,14px));">
+                    <button onclick="window.scrollTo({top:0,behavior:'smooth'})"
+                            class="flex flex-col items-center gap-1 px-3 py-1 rounded-xl"
+                            style="color:#2a4a3c;">
+                        <i data-lucide="home" style="width:20px;height:20px;"></i>
+                        <span class="text-[10px] font-semibold">Inicio</span>
+                    </button>
+                    <button onclick="document.getElementById('section-timeline').scrollIntoView({behavior:'smooth'})"
+                            class="flex flex-col items-center gap-1 px-3 py-1 rounded-xl"
+                            style="color:#9aada5;">
+                        <i data-lucide="clipboard-list" style="width:20px;height:20px;"></i>
+                        <span class="text-[10px] font-medium">Mi Plan</span>
+                    </button>
+                    <!-- Centro -->
+                    <button class="w-12 h-12 rounded-full flex items-center justify-center shadow-lg -mt-4"
+                            style="background:#2a4a3c;">
+                        <span class="font-serif font-bold text-lg text-white">H</span>
+                    </button>
+                    <a href="${waGeneral}" target="_blank"
+                       class="flex flex-col items-center gap-1 px-3 py-1 rounded-xl"
+                       style="color:#9aada5;">
+                        <i data-lucide="message-circle" style="width:20px;height:20px;"></i>
+                        <span class="text-[10px] font-medium">Mensajes</span>
+                    </a>
+                    <button onclick="setView('login')"
+                            class="flex flex-col items-center gap-1 px-3 py-1 rounded-xl"
+                            style="color:#9aada5;">
+                        <i data-lucide="user" style="width:20px;height:20px;"></i>
+                        <span class="text-[10px] font-medium">Perfil</span>
+                    </button>
+                </nav>
             </div>`;
         }
 
