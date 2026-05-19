@@ -37,7 +37,7 @@ export function initChart(filters) {
       datasets: [{
         label: chartTitle,
         data,
-        backgroundColor: '#57534e',
+        backgroundColor: '#3F5D52',
         borderRadius: period === 'anual' ? 4 : 6,
         barThickness: period === 'anual' ? 12 : 24,
       }],
