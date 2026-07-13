@@ -3,6 +3,17 @@
 **Fecha:** 2026-07-13 · **Modo:** único-repo · **Auditor:** agente senior de auditoría
 **Objeto:** `CODIGO HUNZA.html` (SPA de un solo archivo, 538 líneas) + `README.md` (vacío).
 
+> **Actualización 2026-07-13 (misma rama):** las tareas T1–T6 del backlog fueron
+> ejecutadas. El proyecto se reestructuró (`index.html` + `assets/` + `src/`),
+> las dependencias se vendorizaron con versión fijada (H3, H6 ✅), el triaje
+> persiste en localStorage (H5 ✅), el gráfico quedó rotulado como demostración
+> y sin aleatoriedad (H4 mitigado), se eliminó la race condition (H9 ✅), se
+> añadió escape de HTML en el render (H7 ✅), a11y del semáforo y FAQ (H12 ✅),
+> fechas dinámicas (H11 ✅) y limpieza de datos muertos (H8 ✅). Verificado con
+> suite E2E offline (16/16). **Quedan abiertos H1/H2 (auth + backend, T7) —
+> bloqueantes para uso con pacientes reales.** Las referencias archivo:línea de
+> la tabla siguiente apuntan al archivo original, conservado en el historial git.
+
 ---
 
 ## FASE 0 — Definición de éxito

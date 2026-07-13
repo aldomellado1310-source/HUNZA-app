@@ -1,0 +1,13 @@
+{
+  "name": "hunza-app",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Hunza Care — portal estático de seguimiento postoperatorio (demo sin backend)",
+  "scripts": {
+    "build:css": "tailwindcss -i src/tailwind.css -o assets/css/app.css --minify",
+    "watch:css": "tailwindcss -i src/tailwind.css -o assets/css/app.css --watch"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}
