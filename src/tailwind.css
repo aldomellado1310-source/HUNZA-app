@@ -4,7 +4,8 @@
 
 @layer base {
     body {
-        font-family: 'Montserrat', ui-sans-serif, system-ui, sans-serif;
+        /* El stack de fuentes vive solo en tailwind.config.js (theme.fontFamily.sans) */
+        @apply font-sans;
         background-color: #faf9f6;
         color: #333;
         -webkit-tap-highlight-color: transparent;

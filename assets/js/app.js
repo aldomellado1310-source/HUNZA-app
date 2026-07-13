@@ -11,7 +11,14 @@
     const WHATSAPP_NUMBER = '56958049193';
     const STORAGE_KEY = 'hunza_priorities_v1';
     const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-    const PRIORITY_LABEL = { green: 'Estable', yellow: 'Observación', red: 'Atención urgente' };
+    const MESES_CORTOS = MESES.map(m => m.slice(0, 3));
+
+    // Única fuente de verdad del semáforo: etiqueta, orden y clases de color.
+    const PRIORITY = {
+        red:    { label: 'Atención urgente', btnLabel: 'como atención urgente', weight: 1, dot: 'bg-red-500',     text: 'text-red-600',     card: 'border-red-200 shadow-red-100' },
+        yellow: { label: 'Observación',      btnLabel: 'en observación',        weight: 2, dot: 'bg-amber-400',   text: 'text-amber-700',   card: 'border-amber-200' },
+        green:  { label: 'Estable',          btnLabel: 'como estable',          weight: 3, dot: 'bg-emerald-500', text: 'text-emerald-700', card: 'border-stone-100' },
+    };
 
     // Fecha de control relativa a hoy, para que la demo nunca muestre fechas vencidas.
     function controlDate(daysFromNow) {
@@ -134,8 +141,17 @@
     }
 
     function sortPatients() {
-        const weight = { red: 1, yellow: 2, green: 3 };
-        patientsData.sort((a, b) => weight[a.priority] - weight[b.priority]);
+        patientsData.sort((a, b) => PRIORITY[a.priority].weight - PRIORITY[b.priority].weight);
+    }
+
+    function waLink(message) {
+        return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
+    }
+
+    function closeButtonHTML(icon, label) {
+        return `<button onclick="HunzaApp.setView('login')" aria-label="${label}" class="text-stone-500 hover:text-stone-700 transition p-2 bg-stone-50 rounded-full">
+            <i data-lucide="${icon}" class="w-5 h-5"></i>
+        </button>`;
     }
 
     // --- ACCIONES ---
@@ -151,9 +167,20 @@
 
     function setPriority(patientId, newPriority) {
         const patient = patientsData.find(p => p.id === patientId);
-        if (patient) {
-            patient.priority = newPriority;
-            savePriorities();
+        if (!patient) return;
+        patient.priority = newPriority;
+        savePriorities();
+
+        // En el dashboard solo cambian las tarjetas y los contadores: se
+        // actualizan en sitio para no destruir/recrear el gráfico en cada click.
+        const list = document.getElementById('patientList');
+        const stats = document.getElementById('statsTiles');
+        if (view === 'doctor' && list && stats) {
+            sortPatients();
+            list.innerHTML = patientsData.map(getPatientCardHTML).join('');
+            stats.innerHTML = getStatsHTML();
+            if (window.lucide) lucide.createIcons();
+        } else {
             render();
         }
     }
@@ -167,17 +194,14 @@
     }
 
     function handleFilterChange() {
-        chartFilters.period = document.getElementById('periodFilter').value;
-        chartFilters.month = document.getElementById('monthFilter').value;
-
         const monthSelect = document.getElementById('monthFilter');
-        if (chartFilters.period === 'anual') {
-            monthSelect.disabled = true;
-            monthSelect.classList.add('opacity-40', 'cursor-not-allowed');
-        } else {
-            monthSelect.disabled = false;
-            monthSelect.classList.remove('opacity-40', 'cursor-not-allowed');
-        }
+        chartFilters.period = document.getElementById('periodFilter').value;
+        chartFilters.month = monthSelect.value;
+
+        const anual = chartFilters.period === 'anual';
+        monthSelect.disabled = anual;
+        monthSelect.classList.toggle('opacity-40', anual);
+        monthSelect.classList.toggle('cursor-not-allowed', anual);
         initChart();
     }
 
@@ -190,7 +214,7 @@
         if (!ctx) return;
 
         if (typeof Chart === 'undefined') {
-            ctx.parentElement.innerHTML = '<p class="text-sm text-stone-400 text-center pt-16">Gráfico no disponible (librería no cargada).</p>';
+            ctx.parentElement.innerHTML = '<p class="text-sm text-stone-500 text-center pt-16">Gráfico no disponible (librería no cargada).</p>';
             return;
         }
 
@@ -201,7 +225,7 @@
         let chartTitle = '';
 
         if (chartFilters.period === 'anual') {
-            labels = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            labels = MESES_CORTOS;
             data = [120, 140, 115, 160, 185, 170, 200, 220, 190, 210, 250, 280];
             chartTitle = 'Total Procedimientos Anuales';
         } else if (chartFilters.period === 'mensual') {
@@ -280,36 +304,78 @@
 
                     <div class="relative py-4">
                         <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-stone-200"></div></div>
-                        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-stone-400">Acceso Pacientes</span></div>
+                        <div class="relative flex justify-center text-xs"><span class="bg-white px-3 text-stone-500">Acceso Pacientes</span></div>
                     </div>
 
                     <div class="grid grid-cols-1 gap-2.5">
                         ${patientsData.map(p => `
                             <button onclick="HunzaApp.loginAsPatient(${p.id})" class="w-full py-3 px-4 bg-stone-50 text-stone-700 rounded-2xl hover:bg-stone-100 border border-stone-200 transition text-sm flex items-center justify-between font-medium">
                                 <div class="flex items-center gap-2">
-                                    <div class="w-2 h-2 rounded-full ${p.priority === 'red' ? 'bg-red-500' : p.priority === 'yellow' ? 'bg-amber-400' : 'bg-emerald-500'}" aria-hidden="true"></div>
+                                    <div class="w-2 h-2 rounded-full ${PRIORITY[p.priority].dot}" aria-hidden="true"></div>
                                     <span>${esc(p.name)}</span>
                                 </div>
-                                <i data-lucide="chevron-right" class="w-4 h-4 text-stone-400"></i>
+                                <i data-lucide="chevron-right" class="w-4 h-4 text-stone-500"></i>
                             </button>
                         `).join('')}
                     </div>
                 </div>
 
-                <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-400">
+                <div class="mt-8 pt-4 border-t border-stone-100 flex items-center justify-between text-[11px] text-stone-500">
                     <span class="inline-flex items-center gap-1"><i data-lucide="flask-conical" class="w-3 h-3"></i> Modo demostración</span>
-                    <button onclick="HunzaApp.resetDemo()" class="underline hover:text-stone-600 transition">Reiniciar demo</button>
+                    <button onclick="HunzaApp.resetDemo()" class="underline hover:text-stone-700 transition">Reiniciar demo</button>
                 </div>
             </div>
         </div>`;
     }
 
     // 2. Dashboard de la doctora
+    function getStatsHTML() {
+        const total = patientsData.length;
+        const alertas = patientsData.filter(p => p.priority === 'red').length;
+        return `
+            <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-100">
+                <p class="text-xs text-stone-500 font-medium mb-1">Total Activos</p>
+                <p class="text-3xl font-serif text-stone-800">${total}</p>
+            </div>
+            <div class="bg-white p-5 rounded-3xl shadow-sm border ${alertas > 0 ? 'border-red-100 bg-red-50/20' : 'border-stone-100'}">
+                <p class="text-xs text-stone-500 font-medium mb-1">Alertas</p>
+                <p class="text-3xl font-serif ${alertas > 0 ? 'text-red-600' : 'text-stone-500'}">${alertas}</p>
+            </div>`;
+    }
+
+    function getPatientCardHTML(p) {
+        return `
+            <div class="bg-white p-5 rounded-2xl shadow-sm border ${PRIORITY[p.priority].card} flex flex-col md:flex-row gap-4 items-start md:items-center justify-between transition-all">
+                <div class="flex-1">
+                    <div class="flex items-center gap-2 mb-1.5">
+                        <h4 class="font-semibold text-stone-800 text-lg">${esc(p.name)}</h4>
+                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-stone-100 text-stone-600 uppercase truncate max-w-[200px]">${esc(p.procedure)}</span>
+                    </div>
+                    <p class="text-sm text-stone-600 mb-1 flex items-center gap-1.5 font-medium">
+                        <i data-lucide="clock" class="w-4 h-4 text-stone-500"></i> ${esc(p.stage)}
+                    </p>
+                    <p class="text-xs text-stone-500 flex items-center gap-1.5">
+                        <i data-lucide="calendar" class="w-4 h-4"></i> Próx. Control: ${esc(p.nextControl)}
+                        <span class="text-stone-300" aria-hidden="true">·</span>
+                        <span class="font-medium ${PRIORITY[p.priority].text}">${PRIORITY[p.priority].label}</span>
+                    </p>
+                </div>
+
+                <div class="flex gap-2 p-1 bg-stone-50 rounded-full border border-stone-200 w-fit" role="group" aria-label="Prioridad de ${esc(p.name)}">
+                    ${['green', 'yellow', 'red'].map(k => {
+                        const c = PRIORITY[k];
+                        const active = p.priority === k;
+                        return `
+                    <button onclick="HunzaApp.setPriority(${p.id}, '${k}')" aria-label="Marcar a ${esc(p.name)} ${c.btnLabel}" aria-pressed="${active}" class="w-10 h-10 rounded-full transition-all flex items-center justify-center ${active ? `${c.dot} shadow-md scale-110` : 'bg-white hover:bg-stone-200'}">
+                        <div class="w-3 h-3 rounded-full ${active ? 'bg-white' : c.dot}" aria-hidden="true"></div>
+                    </button>`;
+                    }).join('')}
+                </div>
+            </div>`;
+    }
+
     function getDoctorHTML() {
         sortPatients();
-        const total = patientsData.length;
-        const atencionUrgente = patientsData.filter(p => p.priority === 'red').length;
-
         return `
         <div class="min-h-screen bg-stone-50 pb-20">
             <header class="bg-white border-b border-stone-200 sticky top-0 z-20 shadow-sm">
@@ -323,24 +389,13 @@
                             <p class="text-[11px] text-stone-500 uppercase tracking-wider">Directora Médica Hunza</p>
                         </div>
                     </div>
-                    <button onclick="HunzaApp.setView('login')" aria-label="Cerrar sesión" class="text-stone-400 hover:text-stone-700 transition p-2 bg-stone-50 rounded-full">
-                        <i data-lucide="log-out" class="w-5 h-5"></i>
-                    </button>
+                    ${closeButtonHTML('log-out', 'Cerrar sesión')}
                 </div>
             </header>
 
             <main class="max-w-5xl mx-auto px-4 py-6 flex flex-col md:flex-row gap-6">
                 <div class="w-full md:w-1/3 flex flex-col gap-6">
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-100">
-                            <p class="text-xs text-stone-500 font-medium mb-1">Total Activos</p>
-                            <p class="text-3xl font-serif text-stone-800">${total}</p>
-                        </div>
-                        <div class="bg-white p-5 rounded-3xl shadow-sm border ${atencionUrgente > 0 ? 'border-red-100 bg-red-50/20' : 'border-stone-100'}">
-                            <p class="text-xs text-stone-500 font-medium mb-1">Alertas</p>
-                            <p class="text-3xl font-serif ${atencionUrgente > 0 ? 'text-red-600' : 'text-stone-400'}">${atencionUrgente}</p>
-                        </div>
-                    </div>
+                    <div id="statsTiles" class="grid grid-cols-2 gap-4">${getStatsHTML()}</div>
 
                     <div class="bg-white p-5 rounded-3xl shadow-sm border border-stone-100">
                         <div class="flex flex-col gap-3 mb-5">
@@ -374,57 +429,27 @@
                 <div class="w-full md:w-2/3">
                     <h3 class="font-serif text-xl text-stone-800 mb-4 px-1">Seguimiento por Semáforo</h3>
 
-                    <div class="space-y-3">
+                    <div id="patientList" class="space-y-3">
                         ${patientsData.length === 0 ? `
-                            <div class="bg-white p-10 rounded-2xl border border-dashed border-stone-200 text-center text-stone-400 text-sm">
+                            <div class="bg-white p-10 rounded-2xl border border-dashed border-stone-200 text-center text-stone-500 text-sm">
                                 No hay pacientes activos. <button onclick="HunzaApp.resetDemo()" class="underline">Reiniciar demo</button>
                             </div>
-                        ` : patientsData.map(p => `
-                            <div class="bg-white p-5 rounded-2xl shadow-sm border ${p.priority === 'red' ? 'border-red-200 shadow-red-100' : p.priority === 'yellow' ? 'border-amber-200' : 'border-stone-100'} flex flex-col md:flex-row gap-4 items-start md:items-center justify-between transition-all">
-                                <div class="flex-1">
-                                    <div class="flex items-center gap-2 mb-1.5">
-                                        <h4 class="font-semibold text-stone-800 text-lg">${esc(p.name)}</h4>
-                                        <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-stone-100 text-stone-600 uppercase truncate max-w-[200px]">${esc(p.procedure)}</span>
-                                    </div>
-                                    <p class="text-sm text-stone-600 mb-1 flex items-center gap-1.5 font-medium">
-                                        <i data-lucide="clock" class="w-4 h-4 text-stone-400"></i> ${esc(p.stage)}
-                                    </p>
-                                    <p class="text-xs text-stone-400 flex items-center gap-1.5">
-                                        <i data-lucide="calendar" class="w-4 h-4"></i> Próx. Control: ${esc(p.nextControl)}
-                                        <span class="text-stone-300" aria-hidden="true">·</span>
-                                        <span class="font-medium ${p.priority === 'red' ? 'text-red-500' : p.priority === 'yellow' ? 'text-amber-500' : 'text-emerald-600'}">${PRIORITY_LABEL[p.priority]}</span>
-                                    </p>
-                                </div>
-
-                                <div class="flex gap-2 p-1 bg-stone-50 rounded-full border border-stone-200 w-fit" role="group" aria-label="Prioridad de ${esc(p.name)}">
-                                    <button onclick="HunzaApp.setPriority(${p.id}, 'green')" aria-label="Marcar a ${esc(p.name)} como estable" aria-pressed="${p.priority === 'green'}" class="w-10 h-10 rounded-full transition-all flex items-center justify-center ${p.priority === 'green' ? 'bg-emerald-500 shadow-md scale-110' : 'bg-white hover:bg-stone-200'}">
-                                        <div class="w-3 h-3 rounded-full ${p.priority === 'green' ? 'bg-white' : 'bg-emerald-400'}" aria-hidden="true"></div>
-                                    </button>
-                                    <button onclick="HunzaApp.setPriority(${p.id}, 'yellow')" aria-label="Marcar a ${esc(p.name)} en observación" aria-pressed="${p.priority === 'yellow'}" class="w-10 h-10 rounded-full transition-all flex items-center justify-center ${p.priority === 'yellow' ? 'bg-amber-400 shadow-md scale-110' : 'bg-white hover:bg-stone-200'}">
-                                        <div class="w-3 h-3 rounded-full ${p.priority === 'yellow' ? 'bg-white' : 'bg-amber-400'}" aria-hidden="true"></div>
-                                    </button>
-                                    <button onclick="HunzaApp.setPriority(${p.id}, 'red')" aria-label="Marcar a ${esc(p.name)} como atención urgente" aria-pressed="${p.priority === 'red'}" class="w-10 h-10 rounded-full transition-all flex items-center justify-center ${p.priority === 'red' ? 'bg-red-500 shadow-md scale-110' : 'bg-white hover:bg-stone-200'}">
-                                        <div class="w-3 h-3 rounded-full ${p.priority === 'red' ? 'bg-white' : 'bg-red-500'}" aria-hidden="true"></div>
-                                    </button>
-                                </div>
-                            </div>
-                        `).join('')}
+                        ` : patientsData.map(getPatientCardHTML).join('')}
                     </div>
                 </div>
             </main>
         </div>`;
     }
 
-    // 3. Vista de la paciente
+    // 3. Vista de la paciente (render() garantiza que la paciente existe)
     function getPatientHTML() {
         const p = patientsData.find(pat => pat.id === selectedPatientId);
-        if (!p) return getLoginHTML();
 
-        const waGeneralLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Tengo una consulta general sobre mi postoperatorio de ${p.procedure}.`)}`;
+        const waGeneralLink = waLink(`Hola Clínica Hunza, soy ${p.name}. Tengo una consulta general sobre mi postoperatorio de ${p.procedure}.`);
 
         let appointmentHTML = '';
         if (p.pendingAppointment) {
-            const waApptLink = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(`Hola Clínica Hunza, soy ${p.name}. Me gustaría agendar mi cita para: ${p.pendingAppointment}.`)}`;
+            const waApptLink = waLink(`Hola Clínica Hunza, soy ${p.name}. Me gustaría agendar mi cita para: ${p.pendingAppointment}.`);
             appointmentHTML = `
             <div class="bg-blue-50 border border-blue-100 p-5 rounded-3xl relative overflow-hidden mb-2">
                 <div class="absolute -right-4 -top-4 opacity-10 text-blue-500" aria-hidden="true">
@@ -449,9 +474,7 @@
                     <div class="font-serif font-semibold text-stone-800 tracking-wide text-lg flex items-center gap-2">
                         <i data-lucide="sparkles" class="w-4 h-4 text-stone-400"></i> Hunza Care
                     </div>
-                    <button onclick="HunzaApp.setView('login')" aria-label="Salir" class="text-stone-400 hover:text-stone-700 transition p-2 bg-stone-50 rounded-full">
-                        <i data-lucide="x" class="w-5 h-5"></i>
-                    </button>
+                    ${closeButtonHTML('x', 'Salir')}
                 </div>
             </header>
 
@@ -486,7 +509,7 @@
                         ${p.milestones.map((m, idx) => `
                             <div class="snap-center shrink-0 w-60 bg-white p-5 rounded-3xl border ${m.completed ? 'border-stone-800 shadow-md' : 'border-stone-200 opacity-70'} relative">
                                 ${m.completed ? '<div class="absolute -top-2 -right-2 bg-stone-800 text-white p-1.5 rounded-full shadow-sm"><i data-lucide="check" class="w-3 h-3"></i></div>' : ''}
-                                <span class="text-[10px] font-bold text-stone-400 uppercase tracking-wider mb-1.5 block">${esc(m.day)}</span>
+                                <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1.5 block">${esc(m.day)}</span>
                                 <h4 class="font-serif font-semibold text-stone-800 mb-2 leading-tight">${esc(m.title)}</h4>
                                 <p class="text-sm text-stone-500 leading-relaxed">${esc(m.desc)}</p>
 
@@ -494,7 +517,7 @@
                             </div>
                         `).join('')}
                     </div>
-                    <p class="text-[10px] text-stone-400 text-center flex items-center justify-center gap-1 mt-1">
+                    <p class="text-[10px] text-stone-500 text-center flex items-center justify-center gap-1 mt-1">
                         <i data-lucide="arrow-left-right" class="w-3 h-3"></i> Desliza para ver más
                     </p>
                 </div>
@@ -508,7 +531,7 @@
                             <div class="bg-white border border-stone-200 rounded-2xl overflow-hidden">
                                 <button onclick="HunzaApp.toggleFAQ(this)" aria-expanded="false" class="w-full px-5 py-4 text-left flex justify-between items-center bg-white hover:bg-stone-50 transition">
                                     <span class="font-medium text-sm text-stone-800 pr-4">${esc(faq.q)}</span>
-                                    <i data-lucide="chevron-down" class="w-4 h-4 text-stone-400 transition-transform duration-300"></i>
+                                    <i data-lucide="chevron-down" class="w-4 h-4 text-stone-500 transition-transform duration-300"></i>
                                 </button>
                                 <div class="hidden px-5 pb-4 text-sm text-stone-500 leading-relaxed border-t border-stone-100 pt-3 bg-stone-50/50">
                                     ${esc(faq.a)}
