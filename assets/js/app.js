@@ -245,7 +245,7 @@
                 datasets: [{
                     label: chartTitle,
                     data,
-                    backgroundColor: '#57534e',
+                    backgroundColor: '#47695A',
                     borderRadius: chartFilters.period === 'anual' ? 4 : 6,
                     barThickness: chartFilters.period === 'anual' ? 12 : 24,
                 }],
@@ -289,16 +289,19 @@
     // 1. Pantalla de inicio
     function getLoginHTML() {
         return `
-        <div class="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-stone-900 via-stone-800 to-stone-950 relative overflow-hidden">
-            <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-stone-700/30 blur-3xl" aria-hidden="true"></div>
-            <div class="absolute -bottom-40 -right-24 w-[28rem] h-[28rem] rounded-full bg-stone-600/20 blur-3xl" aria-hidden="true"></div>
+        <div class="view-enter min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-brand-50 via-[#F8F7F1] to-brand-100 relative overflow-hidden">
+            <div class="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-brand-200/40 blur-3xl" aria-hidden="true"></div>
+            <div class="absolute -bottom-40 -right-24 w-[28rem] h-[28rem] rounded-full bg-brand-300/25 blur-3xl" aria-hidden="true"></div>
 
-            <div class="relative bg-white/95 p-8 rounded-3xl shadow-2xl max-w-sm w-full text-center border border-stone-100">
+            <div class="relative bg-white/90 backdrop-blur-sm p-8 sm:p-10 rounded-[2rem] shadow-soft max-w-sm w-full text-center border border-white">
+                <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-gradient-to-br from-brand-500 to-brand-700 flex items-center justify-center text-white shadow-md">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i>
+                </div>
                 <h1 class="text-3xl font-serif text-stone-800 mb-1">Hunza Care</h1>
                 <p class="text-stone-500 mb-8 text-sm">Portal de Seguimiento Clínico</p>
 
                 <div class="space-y-4">
-                    <button onclick="HunzaApp.setView('doctor')" class="w-full py-3.5 px-4 bg-stone-800 text-white rounded-2xl hover:bg-stone-700 transition flex items-center justify-center gap-2 font-medium shadow-md">
+                    <button onclick="HunzaApp.setView('doctor')" class="w-full py-3.5 px-4 bg-brand-600 text-white rounded-2xl hover:bg-brand-700 transition flex items-center justify-center gap-2 font-medium shadow-md">
                         <i data-lucide="line-chart" class="w-5 h-5"></i> Dashboard Dra. Macarena
                     </button>
 
@@ -377,11 +380,11 @@
     function getDoctorHTML() {
         sortPatients();
         return `
-        <div class="min-h-screen bg-stone-50 pb-20">
+        <div class="view-enter min-h-screen bg-brand-50 pb-20">
             <header class="bg-white border-b border-stone-200 sticky top-0 z-20 shadow-sm">
                 <div class="max-w-5xl mx-auto px-4 py-4 flex items-center justify-between">
                     <div class="flex items-center gap-3">
-                        <div class="w-10 h-10 rounded-full bg-stone-800 flex items-center justify-center text-white shadow-md">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-brand-600 to-brand-800 flex items-center justify-center text-white shadow-md">
                             <i data-lucide="stethoscope" class="w-5 h-5"></i>
                         </div>
                         <div>
@@ -407,12 +410,12 @@
                             </div>
 
                             <div class="flex gap-2 w-full">
-                                <select id="periodFilter" onchange="HunzaApp.handleFilterChange()" aria-label="Periodo del gráfico" class="w-1/2 text-sm border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-stone-200 outline-none transition-all">
+                                <select id="periodFilter" onchange="HunzaApp.handleFilterChange()" aria-label="Periodo del gráfico" class="w-1/2 text-sm border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-brand-200 outline-none transition-all">
                                     <option value="semanal" ${chartFilters.period === 'semanal' ? 'selected' : ''}>Semanal</option>
                                     <option value="mensual" ${chartFilters.period === 'mensual' ? 'selected' : ''}>Mensual</option>
                                     <option value="anual" ${chartFilters.period === 'anual' ? 'selected' : ''}>Anual</option>
                                 </select>
-                                <select id="monthFilter" onchange="HunzaApp.handleFilterChange()" aria-label="Mes del gráfico" class="w-1/2 text-sm border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-stone-200 outline-none transition-all ${chartFilters.period === 'anual' ? 'opacity-40 cursor-not-allowed' : ''}" ${chartFilters.period === 'anual' ? 'disabled' : ''}>
+                                <select id="monthFilter" onchange="HunzaApp.handleFilterChange()" aria-label="Mes del gráfico" class="w-1/2 text-sm border border-stone-200 rounded-xl bg-stone-50 px-3 py-2 text-stone-700 font-medium focus:ring-2 focus:ring-brand-200 outline-none transition-all ${chartFilters.period === 'anual' ? 'opacity-40 cursor-not-allowed' : ''}" ${chartFilters.period === 'anual' ? 'disabled' : ''}>
                                     ${MESES.map((mes, idx) => `
                                         <option value="${idx + 1}" ${parseInt(chartFilters.month, 10) === idx + 1 ? 'selected' : ''}>${mes}</option>
                                     `).join('')}
@@ -451,16 +454,16 @@
         if (p.pendingAppointment) {
             const waApptLink = waLink(`Hola Clínica Hunza, soy ${p.name}. Me gustaría agendar mi cita para: ${p.pendingAppointment}.`);
             appointmentHTML = `
-            <div class="bg-blue-50 border border-blue-100 p-5 rounded-3xl relative overflow-hidden mb-2">
-                <div class="absolute -right-4 -top-4 opacity-10 text-blue-500" aria-hidden="true">
+            <div class="bg-brand-50 border border-brand-100 p-5 rounded-3xl relative overflow-hidden mb-2">
+                <div class="absolute -right-4 -top-4 opacity-10 text-brand-600" aria-hidden="true">
                     <i data-lucide="calendar-clock" class="w-32 h-32"></i>
                 </div>
                 <div class="relative z-10">
-                    <div class="flex items-center gap-2 text-blue-600 mb-2 font-semibold text-sm uppercase tracking-wide">
+                    <div class="flex items-center gap-2 text-brand-700 mb-2 font-semibold text-sm uppercase tracking-wide">
                         <i data-lucide="bell-ring" class="w-4 h-4"></i> Cita Pendiente
                     </div>
                     <h3 class="font-serif text-lg text-stone-800 mb-4">${esc(p.pendingAppointment)}</h3>
-                    <a href="${waApptLink}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-blue-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-blue-700 transition shadow-md shadow-blue-200">
+                    <a href="${waApptLink}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 bg-brand-600 text-white px-5 py-2.5 rounded-xl text-sm font-medium hover:bg-brand-700 transition shadow-md">
                         Agendar por WhatsApp <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 </div>
@@ -468,7 +471,7 @@
         }
 
         return `
-        <div class="min-h-screen bg-stone-50 flex flex-col pb-6">
+        <div class="view-enter min-h-screen bg-brand-50 flex flex-col pb-6">
             <header class="bg-white/90 backdrop-blur-md sticky top-0 z-20 border-b border-stone-100 shadow-sm">
                 <div class="max-w-md mx-auto px-4 py-3 flex items-center justify-between">
                     <div class="font-serif font-semibold text-stone-800 tracking-wide text-lg flex items-center gap-2">
@@ -483,7 +486,7 @@
                     <p class="text-stone-500 text-sm mb-1 font-medium">Evolución de</p>
                     <h1 class="font-serif text-3xl text-stone-800 mb-4">${esc(p.name)}</h1>
 
-                    <div class="bg-stone-800 text-white p-6 rounded-[2rem] shadow-lg relative overflow-hidden">
+                    <div class="bg-gradient-to-br from-brand-700 to-brand-900 text-white p-6 rounded-[2rem] shadow-soft relative overflow-hidden">
                         <div class="absolute -right-6 -bottom-6 opacity-10" aria-hidden="true"><i data-lucide="activity" class="w-40 h-40"></i></div>
                         <div class="relative z-10">
                             <p class="text-stone-300 text-[10px] uppercase tracking-widest font-semibold mb-1">Procedimiento</p>
@@ -507,13 +510,13 @@
 
                     <div class="flex overflow-x-auto gap-4 pb-4 px-1 no-scrollbar snap-x cursor-grab active:cursor-grabbing">
                         ${p.milestones.map((m, idx) => `
-                            <div class="snap-center shrink-0 w-60 bg-white p-5 rounded-3xl border ${m.completed ? 'border-stone-800 shadow-md' : 'border-stone-200 opacity-70'} relative">
-                                ${m.completed ? '<div class="absolute -top-2 -right-2 bg-stone-800 text-white p-1.5 rounded-full shadow-sm"><i data-lucide="check" class="w-3 h-3"></i></div>' : ''}
+                            <div class="snap-center shrink-0 w-60 bg-white p-5 rounded-3xl border ${m.completed ? 'border-brand-600 shadow-md' : 'border-stone-200 opacity-70'} relative">
+                                ${m.completed ? '<div class="absolute -top-2 -right-2 bg-brand-700 text-white p-1.5 rounded-full shadow-sm"><i data-lucide="check" class="w-3 h-3"></i></div>' : ''}
                                 <span class="text-[10px] font-bold text-stone-500 uppercase tracking-wider mb-1.5 block">${esc(m.day)}</span>
                                 <h4 class="font-serif font-semibold text-stone-800 mb-2 leading-tight">${esc(m.title)}</h4>
                                 <p class="text-sm text-stone-500 leading-relaxed">${esc(m.desc)}</p>
 
-                                ${idx < p.milestones.length - 1 ? `<div class="absolute top-1/2 -right-4 w-4 h-[2px] ${m.completed ? 'bg-stone-800' : 'bg-stone-200'}" aria-hidden="true"></div>` : ''}
+                                ${idx < p.milestones.length - 1 ? `<div class="absolute top-1/2 -right-4 w-4 h-[2px] ${m.completed ? 'bg-brand-600' : 'bg-stone-200'}" aria-hidden="true"></div>` : ''}
                             </div>
                         `).join('')}
                     </div>
@@ -541,7 +544,7 @@
                     </div>
                 </div>
 
-                <div class="text-center px-6 py-4 bg-stone-100 rounded-3xl mt-2">
+                <div class="text-center px-6 py-4 bg-brand-50 border border-brand-100 rounded-3xl mt-2">
                     <p class="font-serif italic text-stone-600 text-sm">"${esc(p.quote)}"</p>
                 </div>
 
