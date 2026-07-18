@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        /* El stack de fuentes vive solo en tailwind.config.js (theme.fontFamily.sans) */
+        @apply font-sans;
+        /* Neutro cálido tenido hacia el verde de marca (brand-50), no el
+           beige/crema genérico por defecto. */
+        background-color: #F2F6F4;
+        color: #26312C;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 10px; }
+    ::-webkit-scrollbar-thumb { background: #d4d4d8; border-radius: 10px; }
+
+    /* Flecha propia para selects (los filtros del dashboard) */
+    select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 0.5rem center;
+        background-size: 1em;
+        padding-right: 2rem !important;
+    }
+}
+
+@layer utilities {
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+}
+
+/* Transición de entrada al cambiar de vista (login/dashboard/paciente).
+   Sutil y corta; nunca se aplica a las actualizaciones parciales del
+   semáforo para no interrumpir clicks repetidos. */
+@keyframes view-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+.view-enter {
+    animation: view-enter 260ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+    .view-enter { animation: none; }
+}
